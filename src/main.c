@@ -7,6 +7,7 @@ int main(void) {
   SetConfigFlags(FLAG_FULLSCREEN_MODE);
   InitWindow(GetScreenWidth(), GetScreenHeight(), "A* Visualizer");
   SetTargetFPS(60);
+  asv_ui_init_fonts();
 
   // Game loop
 
@@ -16,6 +17,7 @@ int main(void) {
 
     asv_ui_calculate();
     asv_ui_draw_containers();
+    asv_ui_draw_text();
 
     EndDrawing();
   }
@@ -23,6 +25,7 @@ int main(void) {
   // Clean game
 
   CloseWindow();
+  asv_ui_free_fonts();
 
   return 0;
 }
