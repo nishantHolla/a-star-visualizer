@@ -1,6 +1,3 @@
-#include <stdio.h>
-
-#include "raylib.h"
 #include "asv.h"
 
 int main(void) {
@@ -15,7 +12,11 @@ int main(void) {
 
   while (!WindowShouldClose()) {
     BeginDrawing();
-    ClearBackground(RAYWHITE);
+    ClearBackground(ASV_UI_WINDOW_BG_COLOR);
+
+    asv_ui_calculate();
+    asv_ui_draw_containers();
+
     EndDrawing();
   }
 

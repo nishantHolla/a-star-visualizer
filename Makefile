@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -pedantic
-INCLUDE=-Isrc/include
+INCLUDE=-Isrc/include -Isrc/include/raylib
 LIBRARY=-Lsrc/lib
 LIB=-lraylib -lm -ldl -lpthread -lGL -lrt -lX11
 SRC=src/*.c
