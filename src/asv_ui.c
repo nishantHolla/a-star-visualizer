@@ -17,7 +17,9 @@ const Color ASV_UI_TEXT_WARNING_COLOR = { .r = 251, .g = 191, .b = 36, .a = 255 
 const Color ASV_UI_TEXT_ERROR_COLOR = { .r = 248, .g = 113, .b = 113, .a = 255 };
 const Color ASV_UI_TEXT_SUCCESS_COLOR = { .r = 74, .g = 222, .b = 128, .a = 255 };
 const Color ASV_UI_CELL_FREE_COLOR = { .r = 115, .g = 115, .b = 115, .a = 255 };
-const Color ASV_UI_SELECTED_ITEM_COLOR = { .r = 129, .g = 140, .b = 248, .a = 255};
+const Color ASV_UI_SELECTED_ITEM_COLOR = { .r = 251, .g = 146, .b = 60, .a = 255};
+const Color ASV_UI_SELECTED_TOOL_COLOR = { .r = 34, .g = 211, .b = 238, .a = 255};
+
 
 // UI Values
 
@@ -34,6 +36,9 @@ const float ASV_UI_TEXT_SPACING_SM = 1.0f;
 const float ASV_UI_TEXT_ITEM_SIZE = ASV_UI_TEXT_SIZE_SM;
 const float ASV_UI_TEXT_ITEM_SPACING = ASV_UI_TEXT_SPACING_SM;
 
+const float ASV_UI_TEXT_TOOL_SIZE = ASV_UI_TEXT_SIZE_SM;
+const float ASV_UI_TEXT_TOOL_SPACING = ASV_UI_TEXT_SPACING_SM;
+
 const Vector2 ASV_UI_WINDOW_PADDING = { .x = 20.0f, .y = 20.0f };
 
 const Vector2 ASV_UI_CONTAINER_PADDING = { .x = 20.0f, .y = 10.0f };
@@ -43,6 +48,7 @@ const Vector2 ASV_UI_GRID_PADDING = { .x = 12.0f, .y = 7.0f };
 const Vector2 ASV_UI_GRID_SPACING = { .x = 7.0f, .y = 7.0f };
 
 const Vector2 ASV_UI_ITEMS_SPACING = { .x = 30.0f, .y = 0.0f };
+const Vector2 ASV_UI_TOOLS_SPACING = { .x = 30.0f, .y = 0.0f };
 
 // UI Elements
 
@@ -52,6 +58,8 @@ Rectangle asv_ui_grid;
 Rectangle asv_ui_obstacles_button;
 Rectangle asv_ui_source_button;
 Rectangle asv_ui_destination_button;
+Rectangle asv_ui_add_button;
+Rectangle asv_ui_remove_button;
 
 Vector2 asv_ui_title_text;
 Vector2 asv_ui_cell;
@@ -126,6 +134,25 @@ void asv_ui_calculate() {
     .width = destination_measure.x,
     .height = destination_measure.y
   };
+
+  Vector2 add_measure = MeasureTextEx(fonts[0], ADD_TEXT, fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_SPACING_SM);
+  Vector2 remove_measure = MeasureTextEx(fonts[0], REMOVE_TEXT, fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_SPACING_SM);
+  Vector2 toolbar_measure = {
+    .x = (asv_ui_menu_bar.width/2) - ((add_measure.x + remove_measure.x + ASV_UI_TOOLS_SPACING.x)/2),
+    .y = (add_measure.y +remove_measure.y) / 2
+  };
+  asv_ui_add_button = (Rectangle) {
+    .x = toolbar_measure.x,
+    .y = V_CENTER(asv_ui_menu_bar,toolbar_measure),
+    .width = add_measure.x,
+    .height = add_measure.y
+  };
+  asv_ui_remove_button = (Rectangle) {
+    .x = asv_ui_add_button.x + asv_ui_add_button.width + ASV_UI_TOOLS_SPACING.x,
+    .y = V_CENTER(asv_ui_menu_bar,toolbar_measure),
+    .width = remove_measure.x,
+    .height = remove_measure.y
+  };
 }
 
 Color asv_ui_get_status_color() {
@@ -159,6 +186,8 @@ void asv_ui_draw_text() {
   DrawTextEx(fonts[0], OBSTACLES_TEXT, REC2VEC(asv_ui_obstacles_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_OBSTACLES,asv_item_selected));
   DrawTextEx(fonts[0], SOURCE_TEXT, REC2VEC(asv_ui_source_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_SOURCE,asv_item_selected));
   DrawTextEx(fonts[0], DESTINATION_TEXT, REC2VEC(asv_ui_destination_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_DESTINATION,asv_item_selected));
+  DrawTextEx(fonts[0], ADD_TEXT, REC2VEC(asv_ui_add_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, TOOL_COLOR(ASV_TOOL_SELECT_ADD,asv_tool_selected));
+  DrawTextEx(fonts[0], REMOVE_TEXT, REC2VEC(asv_ui_remove_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, TOOL_COLOR(ASV_TOOL_SELECT_REMOVE,asv_tool_selected));
 }
 
 void asv_ui_draw_grid() {

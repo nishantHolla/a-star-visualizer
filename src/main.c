@@ -11,6 +11,7 @@ int main(void) {
   asv_init_grid();
   asv_init_status();
   asv_init_items();
+  asv_init_tools();
   asv_ui_init_fonts();
 
   // Game loop
@@ -38,6 +39,12 @@ int main(void) {
       }
       else if (CheckCollisionPointRec(MousePoint, asv_ui_destination_button)) {
         asv_select_item(ASV_ITEM_SELECT_DESTINATION);
+      }
+      else if (CheckCollisionPointRec(MousePoint, asv_ui_add_button)) {
+        asv_select_tool(ASV_TOOL_SELECT_ADD);
+      }
+      else if (CheckCollisionPointRec(MousePoint, asv_ui_remove_button)) {
+        asv_select_tool(ASV_TOOL_SELECT_REMOVE);
       }
     }
   }

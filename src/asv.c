@@ -5,6 +5,7 @@ const int ASV_GRID_COLUMN_COUNT = 40;
 asv_cell_state **asv_grid = NULL;
 asv_status asv_app_status;
 asv_item_select asv_item_selected;
+asv_tool_select asv_tool_selected;
 
 void asv_init_grid() {
   asv_grid = (asv_cell_state **) malloc(ASV_GRID_COLUMN_COUNT * sizeof(asv_cell_state *));
@@ -21,7 +22,11 @@ void asv_init_status() {
 }
 
 void asv_init_items() {
-  asv_item_selected = ASV_ITEM_SELECT_OBSTACLES;
+  asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
+}
+
+void asv_init_tools() {
+  asv_select_tool(ASV_TOOL_SELECT_ADD);
 }
 
 void asv_set_status(const char *message, asv_message_type type) {
@@ -41,6 +46,10 @@ void asv_select_item(asv_item_select item) {
   else if (item == ASV_ITEM_SELECT_DESTINATION) {
     asv_set_status(DESTINATION_STATUS_TEXT, ASV_MESSAGE_NORMAL);
   }
+}
+
+void asv_select_tool(asv_tool_select tool) {
+  asv_tool_selected = tool;
 }
 
 void asv_free_grid() {
