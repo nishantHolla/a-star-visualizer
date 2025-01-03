@@ -13,6 +13,7 @@ Font fonts[MAX_FONTS] = {0};
 const Color ASV_UI_WINDOW_BG_COLOR = { .r = 9, .g = 9, .b = 11, .a = 255 };
 const Color ASV_UI_CONTAINER_BG_COLOR = { .r = 39, .g = 39, .b = 42, .a = 255 };
 const Color ASV_UI_TEXT_COLOR = { .r = 212, .g = 212, .b = 216, .a = 255 };
+const Color ASV_UI_CELL_FREE_COLOR = { .r = 115, .g = 115, .b = 115, .a = 255 };
 
 // UI Values
 
@@ -27,6 +28,9 @@ const Vector2 ASV_UI_WINDOW_PADDING = { .x = 20.0f, .y = 20.0f };
 const Vector2 ASV_UI_CONTAINER_PADDING = { .x = 20.0f, .y = 10.0f };
 const Vector2 ASV_UI_CONTAINER_SPACING = { .x = 20.0f, .y = 20.0f };
 
+const Vector2 ASV_UI_GRID_PADDING = { .x = 12.0f, .y = 7.0f };
+const Vector2 ASV_UI_GRID_SPACING = { .x = 7.0f, .y = 7.0f };
+
 // UI Elements
 
 Rectangle asv_ui_menu_bar;
@@ -34,6 +38,7 @@ Rectangle asv_ui_status_bar;
 Rectangle asv_ui_grid;
 
 Vector2 asv_ui_title_text;
+Vector2 asv_ui_cell;
 
 // UI Functions
 
@@ -68,6 +73,11 @@ void asv_ui_calculate() {
     .x = ASV_UI_WINDOW_PADDING.x + ASV_UI_CONTAINER_PADDING.x,
     .y = ASV_UI_WINDOW_PADDING.y + ASV_UI_CONTAINER_PADDING.y,
   };
+
+  asv_ui_cell = (Vector2) {
+    .x = (asv_ui_grid.width - ASV_UI_CONTAINER_PADDING.x - (ASV_UI_GRID_SPACING.x * ASV_GRID_COLUMN_COUNT)) / ASV_GRID_COLUMN_COUNT,
+    .y = (asv_ui_grid.height - ASV_UI_CONTAINER_PADDING.y - (ASV_UI_GRID_SPACING.y * ASV_GRID_ROW_COUNT)) / ASV_GRID_ROW_COUNT,
+  };
 }
 
 void asv_ui_draw_containers() {
@@ -78,6 +88,20 @@ void asv_ui_draw_containers() {
 
 void asv_ui_draw_text() {
   DrawTextEx(fonts[0], APP_TITLE, asv_ui_title_text, fonts[0].baseSize * ASV_UI_TEXT_SIZE_XL, ASV_UI_TEXT_SPACING_XL, ASV_UI_TEXT_COLOR);
+}
+
+void asv_ui_draw_grid() {
+  for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
+    for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
+      Rectangle cell = {
+        .x = asv_ui_grid.x + ASV_UI_GRID_PADDING.x + (i * ASV_UI_GRID_SPACING.x) + (i * asv_ui_cell.x),
+        .y = asv_ui_grid.y + ASV_UI_GRID_PADDING.y + (j * ASV_UI_GRID_SPACING.y) + (j * asv_ui_cell.y),
+        .width = asv_ui_cell.x,
+        .height = asv_ui_cell.y
+      };
+      DrawRectangleRounded(cell, 0.15f, 0, ASV_UI_CELL_FREE_COLOR);
+    }
+  }
 }
 
 void asv_ui_free_fonts() {
