@@ -170,9 +170,6 @@ void asv() {
   asv_pqueue_init(&open_set);
   asv_pqueue_push(&open_set, asv_source_cell, asv_cost(asv_source_cell));
 
-  asv_HashMap came_from;
-  asv_hashmap_init(&came_from);
-
   asv_HashMap g_score;
   asv_hashmap_init(&g_score);
   asv_hashmap_add(&g_score, asv_compress(asv_source_cell), 0);
@@ -190,6 +187,10 @@ void asv() {
 
     if (current.x == asv_destination_cell.x && current.y == asv_destination_cell.y) {
       asv_set_status(FOUND_PATH_TEXT, ASV_MESSAGE_SUCCESS);
+      asv_pqueue_free(&open_set);
+      asv_hashmap_free(&g_score);
+      asv_hashmap_free(&f_score);
+      asv_hashmap_free(&visited);
       return;
     }
 
@@ -234,6 +235,10 @@ void asv() {
   }
 
   asv_set_status(NOT_FOUND_PATH_TEXT, ASV_MESSAGE_ERROR);
+  asv_pqueue_free(&open_set);
+  asv_hashmap_free(&g_score);
+  asv_hashmap_free(&f_score);
+  asv_hashmap_free(&visited);
 }
 
 int asv_distance(Vector2 a, Vector2 b) {
