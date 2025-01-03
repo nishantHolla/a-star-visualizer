@@ -6,6 +6,8 @@ asv_cell_state **asv_grid = NULL;
 asv_status asv_app_status;
 asv_item_select asv_item_selected;
 asv_tool_select asv_tool_selected;
+Vector2 asv_source_cell;
+Vector2 asv_destination_cell;
 
 void asv_init_grid() {
   asv_grid = (asv_cell_state **) malloc(ASV_GRID_COLUMN_COUNT * sizeof(asv_cell_state *));
@@ -29,6 +31,11 @@ void asv_init_tools() {
   asv_select_tool(ASV_TOOL_SELECT_ADD);
 }
 
+void asv_init_cells() {
+  asv_source_cell = (Vector2) { .x = -1, .y = -1};
+  asv_destination_cell = (Vector2) { .x = -1, .y = -1};
+}
+
 void asv_set_status(const char *message, asv_message_type type) {
   asv_app_status.message_type = type;
   strncpy(asv_app_status.message, message, MAX_MESSAGE_LENGTH);
@@ -50,6 +57,44 @@ void asv_select_item(asv_item_select item) {
 
 void asv_select_tool(asv_tool_select tool) {
   asv_tool_selected = tool;
+}
+
+void asv_select_cell(int column_index, int row_index) {
+  switch (asv_item_selected) {
+    case (ASV_ITEM_SELECT_OBSTACLES):
+      if (asv_tool_selected == ASV_TOOL_SELECT_ADD) {
+        asv_grid[column_index][row_index] = ASV_CELL_OBSTACLE;
+      }
+      else if (asv_tool_selected == ASV_TOOL_SELECT_REMOVE && asv_grid[column_index][row_index] == ASV_CELL_OBSTACLE) {
+        asv_grid[column_index][row_index] = ASV_CELL_FREE;
+      }
+      break;
+
+    case (ASV_ITEM_SELECT_SOURCE):
+      if (asv_tool_selected == ASV_TOOL_SELECT_ADD && asv_source_cell.x == -1) {
+        asv_grid[column_index][row_index] = ASV_CELL_SOURCE;
+        asv_source_cell = (Vector2) { .x = column_index, .y = row_index};
+      }
+      else if (asv_tool_selected == ASV_TOOL_SELECT_REMOVE && asv_grid[column_index][row_index] == ASV_CELL_SOURCE) {
+        asv_grid[column_index][row_index] = ASV_CELL_FREE;
+        asv_source_cell = (Vector2) { .x = -1, .y = -1};
+      }
+      break;
+
+    case (ASV_ITEM_SELECT_DESTINATION):
+      if (asv_tool_selected == ASV_TOOL_SELECT_ADD && asv_destination_cell.x == -1) {
+        asv_grid[column_index][row_index] = ASV_CELL_DESTINATION;
+        asv_destination_cell = (Vector2) { .x = column_index, .y = row_index};
+      }
+      else if (asv_tool_selected == ASV_TOOL_SELECT_REMOVE && asv_grid[column_index][row_index] == ASV_CELL_DESTINATION) {
+        asv_grid[column_index][row_index] = ASV_CELL_FREE;
+        asv_destination_cell = (Vector2) { .x = -1, .y = -1};
+      }
+      break;
+
+    default:
+      break;
+  }
 }
 
 void asv_free_grid() {

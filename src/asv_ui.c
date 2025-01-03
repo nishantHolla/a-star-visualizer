@@ -12,11 +12,17 @@ Font fonts[MAX_FONTS] = {0};
 
 const Color ASV_UI_WINDOW_BG_COLOR = { .r = 9, .g = 9, .b = 11, .a = 255 };
 const Color ASV_UI_CONTAINER_BG_COLOR = { .r = 39, .g = 39, .b = 42, .a = 255 };
+
 const Color ASV_UI_TEXT_COLOR = { .r = 212, .g = 212, .b = 216, .a = 255 };
 const Color ASV_UI_TEXT_WARNING_COLOR = { .r = 251, .g = 191, .b = 36, .a = 255 };
 const Color ASV_UI_TEXT_ERROR_COLOR = { .r = 248, .g = 113, .b = 113, .a = 255 };
 const Color ASV_UI_TEXT_SUCCESS_COLOR = { .r = 74, .g = 222, .b = 128, .a = 255 };
+
 const Color ASV_UI_CELL_FREE_COLOR = { .r = 115, .g = 115, .b = 115, .a = 255 };
+const Color ASV_UI_CELL_OBSTACLE_COLOR = { .r = 0, .g = 0, .b = 0, .a = 255};
+const Color ASV_UI_CELL_SOURCE_COLOR = { .r = 74, .g = 222, .b = 128, .a = 255};
+const Color ASV_UI_CELL_DESTINATION_COLOR = { .r = 251, .g = 113, .b = 133, .a = 255};
+
 const Color ASV_UI_SELECTED_ITEM_COLOR = { .r = 251, .g = 146, .b = 60, .a = 255};
 const Color ASV_UI_SELECTED_TOOL_COLOR = { .r = 34, .g = 211, .b = 238, .a = 255};
 
@@ -205,6 +211,25 @@ Color asv_ui_get_status_color() {
   }
 }
 
+Color asv_ui_get_cell_color(int column_index, int row_index) {
+  switch (asv_grid[column_index][row_index]) {
+    case (ASV_CELL_FREE):
+      return ASV_UI_CELL_FREE_COLOR;
+
+    case (ASV_CELL_OBSTACLE):
+      return ASV_UI_CELL_OBSTACLE_COLOR;
+
+    case (ASV_CELL_SOURCE):
+      return ASV_UI_CELL_SOURCE_COLOR;
+
+    case (ASV_CELL_DESTINATION):
+      return ASV_UI_CELL_DESTINATION_COLOR;
+
+    default:
+      return ASV_UI_CELL_FREE_COLOR;
+  }
+}
+
 void asv_ui_draw_containers() {
   DrawRectangleRounded(asv_ui_status_bar, ASV_UI_ROUNDNESS_LG, 0, ASV_UI_CONTAINER_BG_COLOR);
   DrawRectangleRounded(asv_ui_grid, ASV_UI_ROUNDNESS_SM, 0, ASV_UI_CONTAINER_BG_COLOR);
@@ -233,7 +258,7 @@ void asv_ui_draw_grid() {
         .width = asv_ui_cell.x,
         .height = asv_ui_cell.y
       };
-      DrawRectangleRounded(cell, 0.15f, 0, ASV_UI_CELL_FREE_COLOR);
+      DrawRectangleRounded(cell, 0.15f, 0, asv_ui_get_cell_color(i, j));
     }
   }
 }

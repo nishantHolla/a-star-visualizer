@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "raylib.h"
 
 #define MAX_FONTS 8
@@ -68,6 +69,8 @@ extern asv_cell_state **asv_grid;
 extern asv_status asv_app_status;
 extern asv_item_select asv_item_selected;
 extern asv_tool_select asv_tool_selected;
+extern Vector2 asv_source_cell;
+extern Vector2 asv_destination_cell;
 
 // App Functions
 
@@ -75,9 +78,11 @@ void asv_init_grid();
 void asv_init_status();
 void asv_init_items();
 void asv_init_tools();
+void asv_init_cells();
 void asv_set_status(const char *message, asv_message_type type);
 void asv_select_item(asv_item_select item);
 void asv_select_tool(asv_tool_select tool);
+void asv_select_cell(int column_index, int row_index);
 void asv_free_grid();
 
 // UI Assests
@@ -92,11 +97,17 @@ extern Font fonts[MAX_FONTS];
 
 extern const Color ASV_UI_WINDOW_BG_COLOR;
 extern const Color ASV_UI_CONTAINER_BG_COLOR;
+
 extern const Color ASV_UI_TEXT_COLOR;
 extern const Color ASV_UI_TEXT_WARNING_COLOR;
 extern const Color ASV_UI_TEXT_ERROR_COLOR;
 extern const Color ASV_UI_TEXT_SUCCESS_COLOR;
+
 extern const Color ASV_UI_CELL_FREE_COLOR;
+extern const Color ASV_UI_CELL_OBSTACLE_COLOR;
+extern const Color ASV_UI_CELL_SOURCE_COLOR;
+extern const Color ASV_UI_CELL_DESTINATION_COLOR;
+
 extern const Color ASV_UI_SELECTED_ITEM_COLOR;
 extern const Color ASV_UI_SELECTED_TOOL_COLOR;
 
@@ -156,6 +167,7 @@ extern Vector2 asv_ui_status_position;
 void asv_ui_init_fonts();
 void asv_ui_calculate();
 Color asv_ui_get_status_color();
+Color asv_ui_get_cell_color(int column_index, int row_index);
 void asv_ui_draw_containers();
 void asv_ui_draw_text();
 void asv_ui_draw_grid();
