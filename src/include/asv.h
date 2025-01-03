@@ -99,6 +99,7 @@ void asv_play();
 void asv_clear();
 void asv_reset();
 void asv_free_grid();
+void asv();
 
 // UI Assests
 
@@ -196,7 +197,7 @@ void asv_ui_free_fonts();
 
 typedef struct asv_HashBucket {
   int key;
-  int value;
+  Vector2 value;
   struct asv_HashBucket *next;
 } asv_HashBucket;
 
@@ -206,8 +207,8 @@ typedef struct asv_HashMap {
 } asv_HashMap;
 
 void asv_hashmap_init(asv_HashMap *map);
-void asv_hashmap_add(asv_HashMap *map, int key, int value);
-int asv_hashmap_get(asv_HashMap *map, int key);
+void asv_hashmap_add(asv_HashMap *map, int key, Vector2 value);
+Vector2 asv_hashmap_get(asv_HashMap *map, int key);
 void asv_hashmap_remove(asv_HashMap *map, int key);
 void asv_hashmap_free(asv_HashMap *map);
 
