@@ -75,6 +75,7 @@ int main(void) {
 
   CloseWindow();
   asv_ui_free_fonts();
+  pthread_join(asv_thread, NULL);
   asv_free_grid();
 
   return 0;

@@ -9,6 +9,7 @@ asv_item_select asv_item_selected;
 asv_tool_select asv_tool_selected;
 Vector2 asv_source_cell;
 Vector2 asv_destination_cell;
+pthread_t asv_thread;
 
 void asv_init_grid() {
   asv_grid = (asv_cell_state **) malloc(ASV_GRID_COLUMN_COUNT * sizeof(asv_cell_state *));
@@ -139,7 +140,7 @@ void asv_play() {
   }
 
   asv_set_state(ASV_STATE_PLAYING);
-  asv();
+  pthread_create(&asv_thread, NULL, &asv, NULL);
 }
 
 void asv_clear() {
@@ -147,6 +148,10 @@ void asv_clear() {
     for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
       asv_grid[i][j] = ASV_CELL_FREE;
     }
+  }
+
+  if (asv_app_state != ASV_STATE_IDLE) {
+    pthread_cancel(asv_thread);
   }
 
   asv_source_cell = (Vector2) { .x = -1, .y = -1};
@@ -165,6 +170,9 @@ void asv_reset() {
     }
   }
 
+  if (asv_app_state != ASV_STATE_IDLE) {
+    pthread_cancel(asv_thread);
+  }
   asv_set_state(ASV_STATE_IDLE);
   asv_select_tool(ASV_TOOL_SELECT_ADD);
   asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
@@ -177,7 +185,7 @@ void asv_free_grid() {
   free(asv_grid);
 }
 
-void asv() {
+void *asv() {
   asv_PQueue open_set;
   asv_pqueue_init(&open_set);
   asv_pqueue_push(&open_set, asv_source_cell, asv_cost(asv_source_cell));
@@ -203,7 +211,7 @@ void asv() {
       asv_hashmap_free(&g_score);
       asv_hashmap_free(&f_score);
       asv_hashmap_free(&visited);
-      return;
+      return NULL;
     }
 
     if (current.x != asv_source_cell.x || current.y != asv_source_cell.y) {
@@ -251,6 +259,7 @@ void asv() {
   asv_hashmap_free(&g_score);
   asv_hashmap_free(&f_score);
   asv_hashmap_free(&visited);
+  return NULL;
 }
 
 int asv_distance(Vector2 a, Vector2 b) {

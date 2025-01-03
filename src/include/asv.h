@@ -7,6 +7,7 @@
 #include <string.h>
 #include <math.h>
 #include <limits.h>
+#include <pthread.h>
 #include "raylib.h"
 
 #define MAX_FONTS 8
@@ -83,6 +84,7 @@ extern asv_item_select asv_item_selected;
 extern asv_tool_select asv_tool_selected;
 extern Vector2 asv_source_cell;
 extern Vector2 asv_destination_cell;
+extern pthread_t asv_thread;
 
 // App Functions
 
@@ -101,7 +103,7 @@ void asv_play();
 void asv_clear();
 void asv_reset();
 void asv_free_grid();
-void asv();
+void *asv();
 int asv_distance(Vector2 a, Vector2 b);
 int asv_compress(Vector2 a);
 int asv_cost(Vector2 a);
