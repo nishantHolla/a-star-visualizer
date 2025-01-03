@@ -202,6 +202,9 @@ void *asv() {
   asv_hashmap_init(&visited);
 
   while (open_set.size > 0) {
+    while (asv_app_state == ASV_STATE_PAUSED) {
+      sleep(1);
+    }
     Vector2 current = asv_pqueue_pop(&open_set, NULL);
     asv_hashmap_add(&visited, asv_compress(current), 1);
 
@@ -252,6 +255,11 @@ void *asv() {
         asv_pqueue_push(&open_set, neighbor_cell, new_f);
       }
     }
+
+    struct timespec req = {0};
+    req.tv_sec = 0;
+    req.tv_nsec = 500 * 10000;
+    nanosleep(&req, NULL);
   }
 
   asv_set_status(NOT_FOUND_PATH_TEXT, ASV_MESSAGE_ERROR);

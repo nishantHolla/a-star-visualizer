@@ -8,6 +8,8 @@
 #include <math.h>
 #include <limits.h>
 #include <pthread.h>
+#include <time.h>
+#include <unistd.h>
 #include "raylib.h"
 
 #define MAX_FONTS 8
