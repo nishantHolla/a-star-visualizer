@@ -51,6 +51,10 @@ void asv_set_status(const char *message, asv_message_type type) {
 }
 
 void asv_select_item(asv_item_select item) {
+  if (asv_app_state != ASV_STATE_IDLE) {
+    return;
+  }
+
   asv_item_selected = item;
 
   if (item == ASV_ITEM_SELECT_OBSTACLES) {
@@ -65,10 +69,18 @@ void asv_select_item(asv_item_select item) {
 }
 
 void asv_select_tool(asv_tool_select tool) {
+  if (asv_app_state != ASV_STATE_IDLE) {
+    return;
+  }
+
   asv_tool_selected = tool;
 }
 
 void asv_select_cell(int column_index, int row_index) {
+  if (asv_app_state != ASV_STATE_IDLE) {
+    return;
+  }
+
   switch (asv_item_selected) {
     case (ASV_ITEM_SELECT_OBSTACLES):
       if (asv_tool_selected == ASV_TOOL_SELECT_ADD) {
