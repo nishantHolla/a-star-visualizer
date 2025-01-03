@@ -10,6 +10,7 @@ int main(void) {
 
   asv_init_grid();
   asv_init_status();
+  asv_init_items();
   asv_ui_init_fonts();
 
   // Game loop
@@ -24,6 +25,21 @@ int main(void) {
     asv_ui_draw_grid();
 
     EndDrawing();
+
+    Vector2 MousePoint = GetMousePosition();
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+      if (CheckCollisionPointRec(MousePoint, asv_ui_obstacles_button)) {
+        asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
+        asv_item_selected = ASV_ITEM_SELECT_OBSTACLES;
+      }
+      else if (CheckCollisionPointRec(MousePoint, asv_ui_source_button)) {
+        asv_select_item(ASV_ITEM_SELECT_SOURCE);
+      }
+      else if (CheckCollisionPointRec(MousePoint, asv_ui_destination_button)) {
+        asv_select_item(ASV_ITEM_SELECT_DESTINATION);
+      }
+    }
   }
 
   // Clean game

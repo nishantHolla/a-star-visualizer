@@ -17,6 +17,7 @@ const Color ASV_UI_TEXT_WARNING_COLOR = { .r = 251, .g = 191, .b = 36, .a = 255 
 const Color ASV_UI_TEXT_ERROR_COLOR = { .r = 248, .g = 113, .b = 113, .a = 255 };
 const Color ASV_UI_TEXT_SUCCESS_COLOR = { .r = 74, .g = 222, .b = 128, .a = 255 };
 const Color ASV_UI_CELL_FREE_COLOR = { .r = 115, .g = 115, .b = 115, .a = 255 };
+const Color ASV_UI_SELECTED_ITEM_COLOR = { .r = 129, .g = 140, .b = 248, .a = 255};
 
 // UI Values
 
@@ -27,6 +28,11 @@ const float ASV_UI_TEXT_SIZE_XL = 5.0f;
 const float ASV_UI_TEXT_SPACING_XL = 8.0f;
 const float ASV_UI_TEXT_SIZE_MD = 3.0f;
 const float ASV_UI_TEXT_SPACING_MD = 4.0f;
+const float ASV_UI_TEXT_SIZE_SM = 2.5f;
+const float ASV_UI_TEXT_SPACING_SM = 1.0f;
+
+const float ASV_UI_TEXT_ITEM_SIZE = ASV_UI_TEXT_SIZE_SM;
+const float ASV_UI_TEXT_ITEM_SPACING = ASV_UI_TEXT_SPACING_SM;
 
 const Vector2 ASV_UI_WINDOW_PADDING = { .x = 20.0f, .y = 20.0f };
 
@@ -36,11 +42,16 @@ const Vector2 ASV_UI_CONTAINER_SPACING = { .x = 20.0f, .y = 20.0f };
 const Vector2 ASV_UI_GRID_PADDING = { .x = 12.0f, .y = 7.0f };
 const Vector2 ASV_UI_GRID_SPACING = { .x = 7.0f, .y = 7.0f };
 
+const Vector2 ASV_UI_ITEMS_SPACING = { .x = 30.0f, .y = 0.0f };
+
 // UI Elements
 
 Rectangle asv_ui_menu_bar;
 Rectangle asv_ui_status_bar;
 Rectangle asv_ui_grid;
+Rectangle asv_ui_obstacles_button;
+Rectangle asv_ui_source_button;
+Rectangle asv_ui_destination_button;
 
 Vector2 asv_ui_title_text;
 Vector2 asv_ui_cell;
@@ -88,7 +99,32 @@ void asv_ui_calculate() {
   Vector2 status_measure = MeasureTextEx(fonts[0], asv_app_status.message, fonts[0].baseSize * ASV_UI_TEXT_SIZE_MD, ASV_UI_TEXT_SPACING_MD);
   asv_ui_status_position = (Vector2) {
     .x = (asv_ui_status_bar.x + asv_ui_status_bar.width) - status_measure.x - ASV_UI_CONTAINER_PADDING.x,
-    .y = asv_ui_status_bar.y + ((asv_ui_status_bar.height - status_measure.y) / 2)
+    /*.y = asv_ui_status_bar.y + ((asv_ui_status_bar.height - status_measure.y) / 2)*/
+    .y = V_CENTER(asv_ui_status_bar,status_measure)
+  };
+
+  Vector2 obstacle_measure = MeasureTextEx(fonts[0], OBSTACLES_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING);
+  asv_ui_obstacles_button = (Rectangle) {
+    .x = asv_ui_menu_bar.x + ASV_UI_CONTAINER_PADDING.x,
+    .y = V_CENTER(asv_ui_menu_bar,obstacle_measure),
+    .width = obstacle_measure.x,
+    .height = obstacle_measure.y
+  };
+
+  Vector2 source_measure = MeasureTextEx(fonts[0], SOURCE_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING);
+  asv_ui_source_button = (Rectangle) {
+    .x = asv_ui_obstacles_button.x + asv_ui_obstacles_button.width + ASV_UI_ITEMS_SPACING.x,
+    .y = V_CENTER(asv_ui_menu_bar,source_measure),
+    .width = source_measure.x,
+    .height = source_measure.y
+  };
+
+  Vector2 destination_measure = MeasureTextEx(fonts[0], DESTINATION_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING);
+  asv_ui_destination_button = (Rectangle) {
+    .x = asv_ui_source_button.x + asv_ui_source_button.width + ASV_UI_ITEMS_SPACING.x,
+    .y = V_CENTER(asv_ui_menu_bar,destination_measure),
+    .width = destination_measure.x,
+    .height = destination_measure.y
   };
 }
 
@@ -120,6 +156,9 @@ void asv_ui_draw_containers() {
 void asv_ui_draw_text() {
   DrawTextEx(fonts[0], APP_TITLE, asv_ui_title_text, fonts[0].baseSize * ASV_UI_TEXT_SIZE_XL, ASV_UI_TEXT_SPACING_XL, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], asv_app_status.message, asv_ui_status_position, fonts[0].baseSize * ASV_UI_TEXT_SIZE_MD, ASV_UI_TEXT_SPACING_MD, asv_ui_get_status_color());
+  DrawTextEx(fonts[0], OBSTACLES_TEXT, REC2VEC(asv_ui_obstacles_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_OBSTACLES,asv_item_selected));
+  DrawTextEx(fonts[0], SOURCE_TEXT, REC2VEC(asv_ui_source_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_SOURCE,asv_item_selected));
+  DrawTextEx(fonts[0], DESTINATION_TEXT, REC2VEC(asv_ui_destination_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_DESTINATION,asv_item_selected));
 }
 
 void asv_ui_draw_grid() {
