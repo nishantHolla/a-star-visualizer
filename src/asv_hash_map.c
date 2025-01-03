@@ -28,6 +28,7 @@ void asv_hashmap_add(asv_HashMap *map, int key, int value) {
     new_bucket->value = value;
     new_bucket->next = map->buffer[index];
     map->buffer[index] =new_bucket;
+    map->size++;
   }
 }
 
@@ -37,7 +38,7 @@ int asv_hashmap_get(asv_HashMap *map, int key) {
   }
 
   int index = key % HASH_CAPACITY;
-  asv_HashBucket *current = map->buffer[key];
+  asv_HashBucket *current = map->buffer[index];
   while (current) {
     if (current->key == key) {
       return current->value;
@@ -68,6 +69,7 @@ void asv_hashmap_remove(asv_HashMap *map, int key) {
     map->buffer[index] = NULL;
   }
   free(current);
+  map->size--;
 }
 
 void asv_hashmap_free(asv_HashMap *map) {

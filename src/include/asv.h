@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <limits.h>
 #include "raylib.h"
 
 #define MAX_FONTS 8
@@ -209,5 +210,25 @@ void asv_hashmap_add(asv_HashMap *map, int key, int value);
 int asv_hashmap_get(asv_HashMap *map, int key);
 void asv_hashmap_remove(asv_HashMap *map, int key);
 void asv_hashmap_free(asv_HashMap *map);
+
+// PriorityQueue
+
+typedef struct asv_QueueElement {
+  int value;
+  int priority;
+  struct asv_QueueElement *next;
+  struct asv_QueueElement *prev;
+} asv_QueueElement;
+
+typedef struct asv_PQueue {
+  asv_QueueElement *front;
+  asv_QueueElement *rear;
+  int size;
+} asv_PQueue;
+
+void asv_pqueue_init(asv_PQueue *queue);
+void asv_pqueue_push(asv_PQueue *queue, int value, int priority);
+int asv_pqueue_pop(asv_PQueue *queue, int *priority);
+void asv_pqueue_free(asv_PQueue *queue);
 
 #endif // !ASV_H_
