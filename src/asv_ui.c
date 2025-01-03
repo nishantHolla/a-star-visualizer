@@ -26,6 +26,7 @@ const Color ASV_UI_CELL_DESTINATION_COLOR = { .r = 251, .g = 113, .b = 133, .a =
 const Color ASV_UI_SELECTED_ITEM_COLOR = { .r = 251, .g = 146, .b = 60, .a = 255};
 const Color ASV_UI_SELECTED_TOOL_COLOR = { .r = 34, .g = 211, .b = 238, .a = 255};
 
+const Color ASV_UI_DISABLED_COLOR = { .r = 163, .g = 163, .b = 163, .a = 255 };
 
 // UI Values
 
@@ -183,7 +184,8 @@ void asv_ui_calculate() {
     .height = reset_measure.y
   };
 
-  Vector2 play_measure = MeasureTextEx(fonts[0], PLAY_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
+  const char *text = asv_app_state == ASV_STATE_PLAYING ? PAUSE_TEXT : PLAY_TEXT;
+  Vector2 play_measure = MeasureTextEx(fonts[0], text, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
   asv_ui_play_button = (Rectangle) {
     .x = asv_ui_reset_button.x - ASV_UI_ACTIONS_SPACING.x - play_measure.x,
     .y = V_CENTER(asv_ui_menu_bar,play_measure),
@@ -230,6 +232,30 @@ Color asv_ui_get_cell_color(int column_index, int row_index) {
   }
 }
 
+Color asv_ui_get_item_color(asv_item_select item) {
+  if (asv_app_state == ASV_STATE_PLAYING) {
+    return ASV_UI_DISABLED_COLOR;
+  }
+
+  if (asv_item_selected == item) {
+    return ASV_UI_SELECTED_ITEM_COLOR;
+  }
+
+  return ASV_UI_TEXT_COLOR;
+}
+
+Color asv_ui_get_tool_color(asv_tool_select tool) {
+  if (asv_app_state == ASV_STATE_PLAYING) {
+    return ASV_UI_DISABLED_COLOR;
+  }
+
+  if (asv_tool_selected == tool) {
+    return ASV_UI_SELECTED_TOOL_COLOR;
+  }
+
+  return ASV_UI_TEXT_COLOR;
+}
+
 void asv_ui_draw_containers() {
   DrawRectangleRounded(asv_ui_status_bar, ASV_UI_ROUNDNESS_LG, 0, ASV_UI_CONTAINER_BG_COLOR);
   DrawRectangleRounded(asv_ui_grid, ASV_UI_ROUNDNESS_SM, 0, ASV_UI_CONTAINER_BG_COLOR);
@@ -239,11 +265,11 @@ void asv_ui_draw_containers() {
 void asv_ui_draw_text() {
   DrawTextEx(fonts[0], APP_TITLE, asv_ui_title_text, fonts[0].baseSize * ASV_UI_TEXT_SIZE_XL, ASV_UI_TEXT_SPACING_XL, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], asv_app_status.message, asv_ui_status_position, fonts[0].baseSize * ASV_UI_TEXT_SIZE_MD, ASV_UI_TEXT_SPACING_MD, asv_ui_get_status_color());
-  DrawTextEx(fonts[0], OBSTACLES_TEXT, REC2VEC(asv_ui_obstacles_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_OBSTACLES,asv_item_selected));
-  DrawTextEx(fonts[0], SOURCE_TEXT, REC2VEC(asv_ui_source_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_SOURCE,asv_item_selected));
-  DrawTextEx(fonts[0], DESTINATION_TEXT, REC2VEC(asv_ui_destination_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_DESTINATION,asv_item_selected));
-  DrawTextEx(fonts[0], ADD_TEXT, REC2VEC(asv_ui_add_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, TOOL_COLOR(ASV_TOOL_SELECT_ADD,asv_tool_selected));
-  DrawTextEx(fonts[0], REMOVE_TEXT, REC2VEC(asv_ui_remove_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, TOOL_COLOR(ASV_TOOL_SELECT_REMOVE,asv_tool_selected));
+  DrawTextEx(fonts[0], OBSTACLES_TEXT, REC2VEC(asv_ui_obstacles_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, asv_ui_get_item_color(ASV_ITEM_SELECT_OBSTACLES));
+  DrawTextEx(fonts[0], SOURCE_TEXT, REC2VEC(asv_ui_source_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, asv_ui_get_item_color(ASV_ITEM_SELECT_SOURCE));
+  DrawTextEx(fonts[0], DESTINATION_TEXT, REC2VEC(asv_ui_destination_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, asv_ui_get_item_color(ASV_ITEM_SELECT_DESTINATION));
+  DrawTextEx(fonts[0], ADD_TEXT, REC2VEC(asv_ui_add_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, asv_ui_get_tool_color(ASV_TOOL_SELECT_ADD));
+  DrawTextEx(fonts[0], REMOVE_TEXT, REC2VEC(asv_ui_remove_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, asv_ui_get_tool_color(ASV_TOOL_SELECT_REMOVE));
   DrawTextEx(fonts[0], CLEAR_TEXT, REC2VEC(asv_ui_clear_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], RESET_TEXT, REC2VEC(asv_ui_reset_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], PLAY_TEXT, REC2VEC(asv_ui_play_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);

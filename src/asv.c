@@ -4,6 +4,7 @@ const int ASV_GRID_ROW_COUNT = 20;
 const int ASV_GRID_COLUMN_COUNT = 40;
 asv_cell_state **asv_grid = NULL;
 asv_status asv_app_status;
+asv_state asv_app_state;
 asv_item_select asv_item_selected;
 asv_tool_select asv_tool_selected;
 Vector2 asv_source_cell;
@@ -17,6 +18,10 @@ void asv_init_grid() {
       asv_grid[i][j] =ASV_CELL_FREE;
     }
   }
+}
+
+void asv_init_state() {
+  asv_set_state(ASV_STATE_IDLE);
 }
 
 void asv_init_status() {
@@ -34,6 +39,10 @@ void asv_init_tools() {
 void asv_init_cells() {
   asv_source_cell = (Vector2) { .x = -1, .y = -1};
   asv_destination_cell = (Vector2) { .x = -1, .y = -1};
+}
+
+void asv_set_state(asv_state state) {
+  asv_app_state = state;
 }
 
 void asv_set_status(const char *message, asv_message_type type) {

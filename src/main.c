@@ -9,6 +9,7 @@ int main(void) {
   SetTargetFPS(60);
 
   asv_init_grid();
+  asv_init_state();
   asv_init_status();
   asv_init_items();
   asv_init_tools();

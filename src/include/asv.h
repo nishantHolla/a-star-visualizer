@@ -20,13 +20,12 @@
 #define ADD_TEXT "Add"
 #define REMOVE_TEXT "Remove"
 #define PLAY_TEXT "Play"
+#define PAUSE_TEXT "Pause"
 #define RESET_TEXT "Reset"
 #define CLEAR_TEXT "Clear"
 
 #define V_CENTER(a,b) a.y+((a.height-b.y)/2)
 #define REC2VEC(a) (Vector2) {.x=a.x,.y=a.y}
-#define ITEM_COLOR(a,b) a==b ? ASV_UI_SELECTED_ITEM_COLOR : ASV_UI_TEXT_COLOR
-#define TOOL_COLOR(a,b) a==b ? ASV_UI_SELECTED_TOOL_COLOR : ASV_UI_TEXT_COLOR
 
 // App Definitions
 
@@ -61,12 +60,19 @@ typedef struct asv_status {
   asv_message_type message_type;
 } asv_status;
 
+typedef enum asv_state {
+  ASV_STATE_IDLE,
+  ASV_STATE_PLAYING,
+  ASV_STATE_PAUSED
+} asv_state;
+
 // App Values
 
 extern const int ASV_GRID_ROW_COUNT;
 extern const int ASV_GRID_COLUMN_COUNT;
 extern asv_cell_state **asv_grid;
 extern asv_status asv_app_status;
+extern asv_state asv_app_state;
 extern asv_item_select asv_item_selected;
 extern asv_tool_select asv_tool_selected;
 extern Vector2 asv_source_cell;
@@ -79,6 +85,8 @@ void asv_init_status();
 void asv_init_items();
 void asv_init_tools();
 void asv_init_cells();
+void asv_init_state();
+void asv_set_state(asv_state state);
 void asv_set_status(const char *message, asv_message_type type);
 void asv_select_item(asv_item_select item);
 void asv_select_tool(asv_tool_select tool);
@@ -112,6 +120,8 @@ extern const Color ASV_UI_CELL_DESTINATION_COLOR;
 
 extern const Color ASV_UI_SELECTED_ITEM_COLOR;
 extern const Color ASV_UI_SELECTED_TOOL_COLOR;
+
+extern const Color ASV_UI_DISABLED_COLOR;
 
 // UI Values
 
@@ -170,6 +180,8 @@ void asv_ui_init_fonts();
 void asv_ui_calculate();
 Color asv_ui_get_status_color();
 Color asv_ui_get_cell_color(int column_index, int row_index);
+Color asv_ui_get_item_color(asv_item_select item);
+Color asv_ui_get_tool_color(asv_tool_select tool);
 void asv_ui_draw_containers();
 void asv_ui_draw_text();
 void asv_ui_draw_grid();
