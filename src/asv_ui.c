@@ -39,6 +39,9 @@ const float ASV_UI_TEXT_ITEM_SPACING = ASV_UI_TEXT_SPACING_SM;
 const float ASV_UI_TEXT_TOOL_SIZE = ASV_UI_TEXT_SIZE_SM;
 const float ASV_UI_TEXT_TOOL_SPACING = ASV_UI_TEXT_SPACING_SM;
 
+const float ASV_UI_TEXT_ACTION_SIZE = ASV_UI_TEXT_SIZE_SM;
+const float ASV_UI_TEXT_ACTION_SPACING = ASV_UI_TEXT_SPACING_SM;
+
 const Vector2 ASV_UI_WINDOW_PADDING = { .x = 20.0f, .y = 20.0f };
 
 const Vector2 ASV_UI_CONTAINER_PADDING = { .x = 20.0f, .y = 10.0f };
@@ -49,6 +52,7 @@ const Vector2 ASV_UI_GRID_SPACING = { .x = 7.0f, .y = 7.0f };
 
 const Vector2 ASV_UI_ITEMS_SPACING = { .x = 30.0f, .y = 0.0f };
 const Vector2 ASV_UI_TOOLS_SPACING = { .x = 30.0f, .y = 0.0f };
+const Vector2 ASV_UI_ACTIONS_SPACING = { .x = 30.0f, .y = 0.0f };
 
 // UI Elements
 
@@ -60,6 +64,9 @@ Rectangle asv_ui_source_button;
 Rectangle asv_ui_destination_button;
 Rectangle asv_ui_add_button;
 Rectangle asv_ui_remove_button;
+Rectangle asv_ui_play_button;
+Rectangle asv_ui_reset_button;
+Rectangle asv_ui_clear_button;
 
 Vector2 asv_ui_title_text;
 Vector2 asv_ui_cell;
@@ -135,8 +142,8 @@ void asv_ui_calculate() {
     .height = destination_measure.y
   };
 
-  Vector2 add_measure = MeasureTextEx(fonts[0], ADD_TEXT, fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_SPACING_SM);
-  Vector2 remove_measure = MeasureTextEx(fonts[0], REMOVE_TEXT, fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_SPACING_SM);
+  Vector2 add_measure = MeasureTextEx(fonts[0], ADD_TEXT, fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING);
+  Vector2 remove_measure = MeasureTextEx(fonts[0], REMOVE_TEXT, fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING);
   Vector2 toolbar_measure = {
     .x = (asv_ui_menu_bar.width/2) - ((add_measure.x + remove_measure.x + ASV_UI_TOOLS_SPACING.x)/2),
     .y = (add_measure.y +remove_measure.y) / 2
@@ -152,6 +159,30 @@ void asv_ui_calculate() {
     .y = V_CENTER(asv_ui_menu_bar,toolbar_measure),
     .width = remove_measure.x,
     .height = remove_measure.y
+  };
+
+  Vector2 clear_measure = MeasureTextEx(fonts[0], CLEAR_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
+  asv_ui_clear_button = (Rectangle) {
+    .x = (asv_ui_menu_bar.x + asv_ui_menu_bar.width) - ASV_UI_CONTAINER_PADDING.x - clear_measure.x,
+    .y = V_CENTER(asv_ui_menu_bar,clear_measure),
+    .width = clear_measure.x,
+    .height = clear_measure.y
+  };
+
+  Vector2 reset_measure = MeasureTextEx(fonts[0], RESET_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
+  asv_ui_reset_button = (Rectangle) {
+    .x = asv_ui_clear_button.x - ASV_UI_ACTIONS_SPACING.x - reset_measure.x,
+    .y = V_CENTER(asv_ui_menu_bar,reset_measure),
+    .width = reset_measure.x,
+    .height = reset_measure.y
+  };
+
+  Vector2 play_measure = MeasureTextEx(fonts[0], PLAY_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
+  asv_ui_play_button = (Rectangle) {
+    .x = asv_ui_reset_button.x - ASV_UI_ACTIONS_SPACING.x - play_measure.x,
+    .y = V_CENTER(asv_ui_menu_bar,play_measure),
+    .width = reset_measure.x,
+    .height = reset_measure.y
   };
 }
 
@@ -188,6 +219,9 @@ void asv_ui_draw_text() {
   DrawTextEx(fonts[0], DESTINATION_TEXT, REC2VEC(asv_ui_destination_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, ITEM_COLOR(ASV_ITEM_SELECT_DESTINATION,asv_item_selected));
   DrawTextEx(fonts[0], ADD_TEXT, REC2VEC(asv_ui_add_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, TOOL_COLOR(ASV_TOOL_SELECT_ADD,asv_tool_selected));
   DrawTextEx(fonts[0], REMOVE_TEXT, REC2VEC(asv_ui_remove_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, TOOL_COLOR(ASV_TOOL_SELECT_REMOVE,asv_tool_selected));
+  DrawTextEx(fonts[0], CLEAR_TEXT, REC2VEC(asv_ui_clear_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
+  DrawTextEx(fonts[0], RESET_TEXT, REC2VEC(asv_ui_reset_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
+  DrawTextEx(fonts[0], PLAY_TEXT, REC2VEC(asv_ui_play_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
 }
 
 void asv_ui_draw_grid() {

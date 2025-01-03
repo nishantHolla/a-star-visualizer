@@ -18,6 +18,9 @@
 #define DESTINATION_STATUS_TEXT "Select destination"
 #define ADD_TEXT "Add"
 #define REMOVE_TEXT "Remove"
+#define PLAY_TEXT "Play"
+#define RESET_TEXT "Reset"
+#define CLEAR_TEXT "Clear"
 
 #define V_CENTER(a,b) a.y+((a.height-b.y)/2)
 #define REC2VEC(a) (Vector2) {.x=a.x,.y=a.y}
@@ -115,6 +118,9 @@ extern const float ASV_UI_TEXT_ITEM_SPACING;
 extern const float ASV_UI_TEXT_TOOL_SIZE;
 extern const float ASV_UI_TEXT_TOOL_SPACING;
 
+extern const float ASV_UI_TEXT_ACTION_SIZE;
+extern const float ASV_UI_TEXT_ACTION_SPACING;
+
 extern const Vector2 ASV_UI_WINDOW_PADDING;
 
 extern const Vector2 ASV_UI_CONTAINER_PADDING;
@@ -125,6 +131,7 @@ extern const Vector2 ASV_UI_GRID_SPACING;
 
 extern const Vector2 ASV_UI_ITEMS_SPACING;
 extern const Vector2 ASV_UI_TOOLS_SPACING;
+extern const Vector2 ASV_UI_ACTIONS_SPACING;
 
 // UI Elements
 
@@ -136,6 +143,9 @@ extern Rectangle asv_ui_source_button;
 extern Rectangle asv_ui_destination_button;
 extern Rectangle asv_ui_add_button;
 extern Rectangle asv_ui_remove_button;
+extern Rectangle asv_ui_play_button;
+extern Rectangle asv_ui_reset_button;
+extern Rectangle asv_ui_clear_button;
 
 extern Vector2 asv_ui_title_text;
 extern Vector2 asv_ui_cell;
