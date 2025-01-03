@@ -9,6 +9,7 @@ int main(void) {
   SetTargetFPS(60);
 
   asv_init_grid();
+  asv_init_status();
   asv_ui_init_fonts();
 
   // Game loop
