@@ -127,6 +127,7 @@ void asv_play() {
   }
 
   asv_set_state(ASV_STATE_PLAYING);
+  asv();
 }
 
 void asv_clear() {
@@ -162,4 +163,89 @@ void asv_free_grid() {
     free(asv_grid[i]);
   }
   free(asv_grid);
+}
+
+void asv() {
+  asv_PQueue open_set;
+  asv_pqueue_init(&open_set);
+  asv_pqueue_push(&open_set, asv_source_cell, asv_cost(asv_source_cell));
+
+  asv_HashMap came_from;
+  asv_hashmap_init(&came_from);
+
+  asv_HashMap g_score;
+  asv_hashmap_init(&g_score);
+  asv_hashmap_add(&g_score, asv_compress(asv_source_cell), 0);
+
+  asv_HashMap f_score;
+  asv_hashmap_init(&f_score);
+  asv_hashmap_add(&f_score, asv_compress(asv_source_cell), asv_cost(asv_source_cell));
+
+  asv_HashMap visited;
+  asv_hashmap_init(&visited);
+
+  while (open_set.size > 0) {
+    Vector2 current = asv_pqueue_pop(&open_set, NULL);
+    asv_hashmap_add(&visited, asv_compress(current), 1);
+
+    if (current.x == asv_destination_cell.x && current.y == asv_destination_cell.y) {
+      asv_set_status(FOUND_PATH_TEXT, ASV_MESSAGE_SUCCESS);
+      return;
+    }
+
+    if (current.x != asv_source_cell.x || current.y != asv_source_cell.y) {
+      asv_grid[(int)current.x][(int)current.y] = ASV_CELL_VISITED;
+    }
+
+    int current_g = asv_hashmap_get(&g_score, asv_compress(current));
+    int new_g = current_g + 1;
+    int new_f = -1;
+
+    Vector2 neighbors_delta[4] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    for (int i=0; i<4; i++) {
+      Vector2 neighbor_cell = {
+        .x = current.x + neighbors_delta[i].x,
+        .y = current.y + neighbors_delta[i].y
+      };
+
+      if (neighbor_cell.x < 0 || neighbor_cell.x >= ASV_GRID_COLUMN_COUNT ||
+          neighbor_cell.y < 0 || neighbor_cell.y >= ASV_GRID_ROW_COUNT ||
+          asv_grid[(int)neighbor_cell.x][(int)neighbor_cell.y] == ASV_CELL_OBSTACLE) {
+        continue;
+      }
+
+      new_f = new_g + asv_cost(neighbor_cell);
+
+      int test_g = asv_hashmap_get(&g_score, asv_compress(neighbor_cell));
+      if (test_g == -1 || test_g > new_g) {
+        asv_hashmap_add(&g_score, asv_compress(neighbor_cell), new_g);
+      }
+
+      int test_f = asv_hashmap_get(&f_score, asv_compress(neighbor_cell));
+      if (test_f == -1 || test_f > new_f) {
+        asv_hashmap_add(&f_score, asv_compress(neighbor_cell), new_f);
+      }
+
+      if (asv_hashmap_get(&visited, asv_compress(neighbor_cell)) == -1) {
+        asv_pqueue_push(&open_set, neighbor_cell, new_f);
+      }
+    }
+  }
+
+  asv_set_status(NOT_FOUND_PATH_TEXT, ASV_MESSAGE_ERROR);
+}
+
+int asv_distance(Vector2 a, Vector2 b) {
+  return abs((int)(a.x - b.x)) + abs((int)(a.y - b.y));
+}
+
+int asv_compress(Vector2 a) {
+  int x = a.x;
+  int y = a.y;
+  return ((x + y) * (x + y + 1) / 2) + y;
+}
+
+int asv_cost(Vector2 a) {
+  return asv_distance(a, asv_destination_cell);
 }

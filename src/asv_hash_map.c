@@ -7,14 +7,14 @@ void asv_hashmap_init(asv_HashMap *map) {
   map->size = 0;
 }
 
-void asv_hashmap_add(asv_HashMap *map, int key, Vector2 value) {
+void asv_hashmap_add(asv_HashMap *map, int key, int value) {
   if (key < 0) {
     return;
   }
 
   int index = key % HASH_CAPACITY;
 
-  if (asv_hashmap_get(map, key) != (Vector2) {.x = -1, .y = -1}) {
+  if (asv_hashmap_get(map, key) != -1) {
     asv_HashBucket *current = map->buffer[index];
     while (current->key != key) {
       current = current->next;
@@ -32,9 +32,9 @@ void asv_hashmap_add(asv_HashMap *map, int key, Vector2 value) {
   }
 }
 
-Vector2 asv_hashmap_get(asv_HashMap *map, int key) {
+int asv_hashmap_get(asv_HashMap *map, int key) {
   if (key < 0) {
-    return {.x = -1, .y = -1};
+    return -1;
   }
 
   int index = key % HASH_CAPACITY;
@@ -46,7 +46,7 @@ Vector2 asv_hashmap_get(asv_HashMap *map, int key) {
     current = current->next;
   }
 
-  return {.x = -1, .y = -1};
+  return -1;
 }
 
 void asv_hashmap_remove(asv_HashMap *map, int key) {

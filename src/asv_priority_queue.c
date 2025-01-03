@@ -6,16 +6,16 @@ void asv_pqueue_init(asv_PQueue *queue) {
   queue->size = 0;
 }
 
-int asv_pqueue_pop(asv_PQueue *queue, int *priority) {
+Vector2 asv_pqueue_pop(asv_PQueue *queue, int *priority) {
   if (queue->size == 0) {
-    return INT_MIN;
+    return (Vector2) {.x = -1, .y = -1};
   }
 
   asv_QueueElement *current = queue->front;
   if (priority) {
     *priority = current->priority;
   }
-  int value = current->value;
+  Vector2 value = current->value;
 
   if (!current->next) {
     queue->front = NULL;
@@ -31,7 +31,7 @@ int asv_pqueue_pop(asv_PQueue *queue, int *priority) {
   return value;
 }
 
-void asv_pqueue_push(asv_PQueue *queue, int value, int priority) {
+void asv_pqueue_push(asv_PQueue *queue, Vector2 value, int priority) {
   asv_QueueElement *new_element = (asv_QueueElement *)malloc(sizeof(asv_QueueElement));
   if (!new_element) {
     return;

@@ -27,6 +27,8 @@
 #define CLEAR_TEXT "Clear"
 #define SELECT_SOURCE_TEXT "Please select a source cell"
 #define SELECT_DESTINATION_TEXT "Please select a destination cell"
+#define FOUND_PATH_TEXT "Path found"
+#define NOT_FOUND_PATH_TEXT "Path not found"
 
 #define V_CENTER(a,b) a.y+((a.height-b.y)/2)
 #define REC2VEC(a) (Vector2) {.x=a.x,.y=a.y}
@@ -100,6 +102,9 @@ void asv_clear();
 void asv_reset();
 void asv_free_grid();
 void asv();
+int asv_distance(Vector2 a, Vector2 b);
+int asv_compress(Vector2 a);
+int asv_cost(Vector2 a);
 
 // UI Assests
 
@@ -120,6 +125,7 @@ extern const Color ASV_UI_TEXT_ERROR_COLOR;
 extern const Color ASV_UI_TEXT_SUCCESS_COLOR;
 
 extern const Color ASV_UI_CELL_FREE_COLOR;
+extern const Color ASV_UI_CELL_VISITED_COLOR;
 extern const Color ASV_UI_CELL_OBSTACLE_COLOR;
 extern const Color ASV_UI_CELL_SOURCE_COLOR;
 extern const Color ASV_UI_CELL_DESTINATION_COLOR;
@@ -197,7 +203,7 @@ void asv_ui_free_fonts();
 
 typedef struct asv_HashBucket {
   int key;
-  Vector2 value;
+  int value;
   struct asv_HashBucket *next;
 } asv_HashBucket;
 
@@ -207,15 +213,15 @@ typedef struct asv_HashMap {
 } asv_HashMap;
 
 void asv_hashmap_init(asv_HashMap *map);
-void asv_hashmap_add(asv_HashMap *map, int key, Vector2 value);
-Vector2 asv_hashmap_get(asv_HashMap *map, int key);
+void asv_hashmap_add(asv_HashMap *map, int key, int value);
+int asv_hashmap_get(asv_HashMap *map, int key);
 void asv_hashmap_remove(asv_HashMap *map, int key);
 void asv_hashmap_free(asv_HashMap *map);
 
 // PriorityQueue
 
 typedef struct asv_QueueElement {
-  int value;
+  Vector2 value;
   int priority;
   struct asv_QueueElement *next;
   struct asv_QueueElement *prev;
@@ -228,8 +234,8 @@ typedef struct asv_PQueue {
 } asv_PQueue;
 
 void asv_pqueue_init(asv_PQueue *queue);
-void asv_pqueue_push(asv_PQueue *queue, int value, int priority);
-int asv_pqueue_pop(asv_PQueue *queue, int *priority);
+void asv_pqueue_push(asv_PQueue *queue, Vector2 value, int priority);
+Vector2 asv_pqueue_pop(asv_PQueue *queue, int *priority);
 void asv_pqueue_free(asv_PQueue *queue);
 
 #endif // !ASV_H_
