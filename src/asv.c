@@ -106,6 +106,29 @@ void asv_select_cell(int column_index, int row_index) {
   }
 }
 
+void asv_play() {
+  if (asv_app_state == ASV_STATE_PLAYING) {
+    asv_set_state(ASV_STATE_PAUSED);
+    return;
+  }
+  else if (asv_app_state == ASV_STATE_PAUSED) {
+    asv_set_state(ASV_STATE_PLAYING);
+    return;
+  }
+
+  if (asv_source_cell.x == -1 || asv_source_cell.y == -1) {
+    asv_set_status(SELECT_SOURCE_TEXT, ASV_MESSAGE_ERROR);
+    return;
+  }
+
+  if (asv_destination_cell.x == -1 || asv_destination_cell.y == -1) {
+    asv_set_status(SELECT_DESTINATION_TEXT, ASV_MESSAGE_ERROR);
+    return;
+  }
+
+  asv_set_state(ASV_STATE_PLAYING);
+}
+
 void asv_clear() {
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
@@ -113,6 +136,9 @@ void asv_clear() {
     }
   }
 
+  asv_source_cell = (Vector2) { .x = -1, .y = -1};
+  asv_destination_cell = (Vector2) { .x = -1, .y = -1};
+  asv_set_state(ASV_STATE_IDLE);
   asv_select_tool(ASV_TOOL_SELECT_ADD);
   asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
 }
@@ -126,6 +152,7 @@ void asv_reset() {
     }
   }
 
+  asv_set_state(ASV_STATE_IDLE);
   asv_select_tool(ASV_TOOL_SELECT_ADD);
   asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
 }

@@ -184,8 +184,7 @@ void asv_ui_calculate() {
     .height = reset_measure.y
   };
 
-  const char *text = asv_app_state == ASV_STATE_PLAYING ? PAUSE_TEXT : PLAY_TEXT;
-  Vector2 play_measure = MeasureTextEx(fonts[0], text, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
+  Vector2 play_measure = MeasureTextEx(fonts[0], asv_app_state == ASV_STATE_PLAYING ? PAUSE_TEXT : PLAY_TEXT, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
   asv_ui_play_button = (Rectangle) {
     .x = asv_ui_reset_button.x - ASV_UI_ACTIONS_SPACING.x - play_measure.x,
     .y = V_CENTER(asv_ui_menu_bar,play_measure),
@@ -233,7 +232,7 @@ Color asv_ui_get_cell_color(int column_index, int row_index) {
 }
 
 Color asv_ui_get_item_color(asv_item_select item) {
-  if (asv_app_state == ASV_STATE_PLAYING) {
+  if (asv_app_state != ASV_STATE_IDLE) {
     return ASV_UI_DISABLED_COLOR;
   }
 
@@ -245,7 +244,7 @@ Color asv_ui_get_item_color(asv_item_select item) {
 }
 
 Color asv_ui_get_tool_color(asv_tool_select tool) {
-  if (asv_app_state == ASV_STATE_PLAYING) {
+  if (asv_app_state != ASV_STATE_IDLE) {
     return ASV_UI_DISABLED_COLOR;
   }
 
@@ -272,7 +271,7 @@ void asv_ui_draw_text() {
   DrawTextEx(fonts[0], REMOVE_TEXT, REC2VEC(asv_ui_remove_button), fonts[0].baseSize * ASV_UI_TEXT_TOOL_SIZE, ASV_UI_TEXT_TOOL_SPACING, asv_ui_get_tool_color(ASV_TOOL_SELECT_REMOVE));
   DrawTextEx(fonts[0], CLEAR_TEXT, REC2VEC(asv_ui_clear_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], RESET_TEXT, REC2VEC(asv_ui_reset_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
-  DrawTextEx(fonts[0], PLAY_TEXT, REC2VEC(asv_ui_play_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
+  DrawTextEx(fonts[0], asv_app_state == ASV_STATE_PLAYING ? PAUSE_TEXT : PLAY_TEXT, REC2VEC(asv_ui_play_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
 }
 
 void asv_ui_draw_grid() {

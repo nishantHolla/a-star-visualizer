@@ -59,7 +59,10 @@ int main(void) {
       else if (CheckCollisionPointRec(MousePoint, asv_ui_remove_button)) {
         asv_select_tool(ASV_TOOL_SELECT_REMOVE);
       }
-      else if (CheckCollisionPointRec(MousePoint, asv_ui_remove_button)) {
+      else if (CheckCollisionPointRec(MousePoint, asv_ui_play_button)) {
+        asv_play();
+      }
+      else if (CheckCollisionPointRec(MousePoint, asv_ui_reset_button)) {
         asv_reset();
       }
       else if (CheckCollisionPointRec(MousePoint, asv_ui_clear_button)) {

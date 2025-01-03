@@ -10,6 +10,7 @@
 
 #define MAX_FONTS 8
 #define MAX_MESSAGE_LENGTH 100
+#define HASH_CAPACITY 1000
 #define APP_TITLE "A* Visualizer"
 #define OBSTACLES_TEXT "Obstacles"
 #define SOURCE_TEXT "Source"
@@ -23,6 +24,8 @@
 #define PAUSE_TEXT "Pause"
 #define RESET_TEXT "Reset"
 #define CLEAR_TEXT "Clear"
+#define SELECT_SOURCE_TEXT "Please select a source cell"
+#define SELECT_DESTINATION_TEXT "Please select a destination cell"
 
 #define V_CENTER(a,b) a.y+((a.height-b.y)/2)
 #define REC2VEC(a) (Vector2) {.x=a.x,.y=a.y}
@@ -91,6 +94,7 @@ void asv_set_status(const char *message, asv_message_type type);
 void asv_select_item(asv_item_select item);
 void asv_select_tool(asv_tool_select tool);
 void asv_select_cell(int column_index, int row_index);
+void asv_play();
 void asv_clear();
 void asv_reset();
 void asv_free_grid();
@@ -186,5 +190,24 @@ void asv_ui_draw_containers();
 void asv_ui_draw_text();
 void asv_ui_draw_grid();
 void asv_ui_free_fonts();
+
+// HashMap
+
+typedef struct asv_HashBucket {
+  int key;
+  int value;
+  struct asv_HashBucket *next;
+} asv_HashBucket;
+
+typedef struct asv_HashMap {
+  asv_HashBucket *buffer[HASH_CAPACITY];
+  int size;
+} asv_HashMap;
+
+void asv_hashmap_init(asv_HashMap *map);
+void asv_hashmap_add(asv_HashMap *map, int key, int value);
+int asv_hashmap_get(asv_HashMap *map, int key);
+void asv_hashmap_remove(asv_HashMap *map, int key);
+void asv_hashmap_free(asv_HashMap *map);
 
 #endif // !ASV_H_
