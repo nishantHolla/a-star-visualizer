@@ -97,6 +97,30 @@ void asv_select_cell(int column_index, int row_index) {
   }
 }
 
+void asv_clear() {
+  for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
+    for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
+      asv_grid[i][j] = ASV_CELL_FREE;
+    }
+  }
+
+  asv_select_tool(ASV_TOOL_SELECT_ADD);
+  asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
+}
+
+void asv_reset() {
+  for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
+    for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
+      if (asv_grid[i][j] == ASV_CELL_VISITED) {
+        asv_grid[i][j] = ASV_CELL_FREE;
+      }
+    }
+  }
+
+  asv_select_tool(ASV_TOOL_SELECT_ADD);
+  asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
+}
+
 void asv_free_grid() {
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     free(asv_grid[i]);

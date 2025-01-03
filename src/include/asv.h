@@ -83,6 +83,8 @@ void asv_set_status(const char *message, asv_message_type type);
 void asv_select_item(asv_item_select item);
 void asv_select_tool(asv_tool_select tool);
 void asv_select_cell(int column_index, int row_index);
+void asv_clear();
+void asv_reset();
 void asv_free_grid();
 
 // UI Assests
