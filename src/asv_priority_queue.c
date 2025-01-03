@@ -32,37 +32,46 @@ int asv_pqueue_pop(asv_PQueue *queue, int *priority) {
 }
 
 void asv_pqueue_push(asv_PQueue *queue, int value, int priority) {
-  asv_QueueElement *new_element = (asv_QueueElement *) malloc(sizeof(asv_QueueElement));
+  asv_QueueElement *new_element = (asv_QueueElement *)malloc(sizeof(asv_QueueElement));
+  if (!new_element) {
+    return;
+  }
+
   new_element->value = value;
   new_element->priority = priority;
   new_element->next = NULL;
   new_element->prev = NULL;
 
-  asv_QueueElement *current = queue->rear;
   if (!queue->rear) {
-    queue->rear = new_element;
     queue->front = new_element;
+    queue->rear = new_element;
   }
   else {
-    while (current && current->priority < priority) {
+    asv_QueueElement *current = queue->rear;
+    while (current && current->priority >= priority) {
       current = current->prev;
     }
 
     if (!current) {
       new_element->next = queue->front;
-      queue->front->prev =new_element;
+      queue->front->prev = new_element;
       queue->front = new_element;
+    }
+    else if (!current->next) {
+      current->next = new_element;
+      new_element->prev = current;
+      queue->rear = new_element;
     }
     else {
       new_element->next = current->next;
-      if (current->next) {
-        current->next->prev = new_element;
-      }
+      new_element->prev = current;
+      current->next->prev = new_element;
       current->next = new_element;
     }
   }
   queue->size++;
 }
+
 
 void asv_pqueue_free(asv_PQueue *queue) {
   while (queue->front) {
