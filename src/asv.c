@@ -7,6 +7,7 @@ asv_status asv_app_status;
 asv_state asv_app_state;
 asv_item_select asv_item_selected;
 asv_tool_select asv_tool_selected;
+asv_speed_select asv_speed_selected;
 Vector2 asv_source_cell;
 Vector2 asv_destination_cell;
 pthread_t asv_thread;
@@ -35,6 +36,10 @@ void asv_init_items() {
 
 void asv_init_tools() {
   asv_select_tool(ASV_TOOL_SELECT_ADD);
+}
+
+void asv_init_speed() {
+  asv_select_speed(ASV_SPEED_SELECT_INSTANT);
 }
 
 void asv_init_cells() {
@@ -77,6 +82,10 @@ void asv_select_tool(asv_tool_select tool) {
   asv_tool_selected = tool;
 }
 
+void asv_select_speed(asv_speed_select speed) {
+  asv_speed_selected = speed;
+}
+
 void asv_select_cell(int column_index, int row_index) {
   if (asv_app_state != ASV_STATE_IDLE) {
     return;
@@ -117,6 +126,15 @@ void asv_select_cell(int column_index, int row_index) {
     default:
       break;
   }
+}
+
+void asv_cycle_speed() {
+  int speed = asv_speed_selected - 1;
+  if (speed < 0) {
+    speed = ASV_SPEED_SELECT_SLOW;
+  }
+
+  asv_select_speed((asv_speed_select) speed);
 }
 
 void asv_play() {
@@ -274,7 +292,7 @@ void *asv() {
       }
     }
 
-    asv_sleep(500);
+    asv_end_cycle();
   }
 
   if (found) {
@@ -285,7 +303,7 @@ void *asv() {
         asv_grid[(int) t.x][(int) t.y] = ASV_CELL_RESULT;
       }
 
-      asv_sleep(500);
+      asv_end_cycle();
     }
   }
   else {
@@ -299,6 +317,28 @@ void *asv() {
   asv_hashmap_free(&visited);
   asv_hashmap_free(&came_from);
   return NULL;
+}
+
+void asv_end_cycle() {
+  switch (asv_speed_selected) {
+    case ASV_SPEED_SELECT_INSTANT:
+      return;
+
+    case ASV_SPEED_SELECT_FAST:
+      asv_sleep(FAST_SLEEP_MS);
+      return;
+
+    case ASV_SPEED_SELECT_MEDIUM:
+      asv_sleep(MEDIUM_SLEEP_MS);
+      return;
+
+    case ASV_SPEED_SELECT_SLOW:
+      asv_sleep(SLOW_SLEEP_MS);
+      return;
+
+    default:
+      return;
+  }
 }
 
 int asv_distance(Vector2 a, Vector2 b) {
@@ -324,8 +364,5 @@ int asv_cost(Vector2 a) {
 }
 
 void asv_sleep(int ms) {
-  struct timespec req = {0};
-  req.tv_sec = 0;
-  req.tv_nsec = ms * 1000000;
-  nanosleep(&req, NULL);
+  usleep(ms * 1000);
 }

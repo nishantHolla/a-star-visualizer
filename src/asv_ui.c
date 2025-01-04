@@ -73,6 +73,7 @@ Rectangle asv_ui_source_button;
 Rectangle asv_ui_destination_button;
 Rectangle asv_ui_add_button;
 Rectangle asv_ui_remove_button;
+Rectangle asv_ui_speed_button;
 Rectangle asv_ui_play_button;
 Rectangle asv_ui_reset_button;
 Rectangle asv_ui_clear_button;
@@ -190,8 +191,18 @@ void asv_ui_calculate() {
   asv_ui_play_button = (Rectangle) {
     .x = asv_ui_reset_button.x - ASV_UI_ACTIONS_SPACING.x - play_measure.x,
     .y = V_CENTER(asv_ui_menu_bar,play_measure),
-    .width = reset_measure.x,
-    .height = reset_measure.y
+    .width = play_measure.x,
+    .height = play_measure.y
+  };
+
+  char speed_text[100];
+  asv_ui_get_speed_text(asv_speed_selected, speed_text);
+  Vector2 speed_measure = MeasureTextEx(fonts[0], speed_text, fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING);
+  asv_ui_speed_button = (Rectangle) {
+    .x = asv_ui_play_button.x - ASV_UI_ACTIONS_SPACING.x - speed_measure.x,
+    .y = V_CENTER(asv_ui_menu_bar,speed_measure),
+    .width = speed_measure.x,
+    .height = speed_measure.y
   };
 }
 
@@ -263,6 +274,32 @@ Color asv_ui_get_tool_color(asv_tool_select tool) {
   return ASV_UI_TEXT_COLOR;
 }
 
+void asv_ui_get_speed_text(asv_speed_select speed, char *text) {
+  strncpy(text, SPEED_PRETEXT, 20);
+
+  switch (speed) {
+    case ASV_SPEED_SELECT_INSTANT:
+      strncat(text, SPEED_INSTANT_TEXT, 20);
+      return;
+
+    case ASV_SPEED_SELECT_FAST:
+      strncat(text, SPEED_FAST_TEXT, 20);
+      return;
+
+    case ASV_SPEED_SELECT_MEDIUM:
+      strncat(text, SPEED_MEDIUM_TEXT, 20);
+      return;
+
+    case ASV_SPEED_SELECT_SLOW:
+      strncat(text, SPEED_SLOW_TEXT, 20);
+      return;
+
+    default:
+      strncat(text, SPEED_MEDIUM_TEXT, 20);
+      return;
+  }
+}
+
 void asv_ui_draw_containers() {
   DrawRectangleRounded(asv_ui_status_bar, ASV_UI_ROUNDNESS_LG, 0, ASV_UI_CONTAINER_BG_COLOR);
   DrawRectangleRounded(asv_ui_grid, ASV_UI_ROUNDNESS_SM, 0, ASV_UI_CONTAINER_BG_COLOR);
@@ -270,6 +307,9 @@ void asv_ui_draw_containers() {
 }
 
 void asv_ui_draw_text() {
+  char speed_text[100];
+  asv_ui_get_speed_text(asv_speed_selected, speed_text);
+
   DrawTextEx(fonts[0], APP_TITLE, asv_ui_title_text, fonts[0].baseSize * ASV_UI_TEXT_SIZE_XL, ASV_UI_TEXT_SPACING_XL, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], asv_app_status.message, asv_ui_status_position, fonts[0].baseSize * ASV_UI_TEXT_SIZE_MD, ASV_UI_TEXT_SPACING_MD, asv_ui_get_status_color());
   DrawTextEx(fonts[0], OBSTACLES_TEXT, REC2VEC(asv_ui_obstacles_button), fonts[0].baseSize * ASV_UI_TEXT_ITEM_SIZE, ASV_UI_TEXT_ITEM_SPACING, asv_ui_get_item_color(ASV_ITEM_SELECT_OBSTACLES));
@@ -280,6 +320,7 @@ void asv_ui_draw_text() {
   DrawTextEx(fonts[0], CLEAR_TEXT, REC2VEC(asv_ui_clear_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], RESET_TEXT, REC2VEC(asv_ui_reset_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
   DrawTextEx(fonts[0], asv_app_state == ASV_STATE_PLAYING ? PAUSE_TEXT : PLAY_TEXT, REC2VEC(asv_ui_play_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
+  DrawTextEx(fonts[0], speed_text, REC2VEC(asv_ui_speed_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
 }
 
 void asv_ui_draw_grid() {

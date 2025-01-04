@@ -24,6 +24,11 @@
 #define DESTINATION_STATUS_TEXT "Select destination"
 #define ADD_TEXT "Add"
 #define REMOVE_TEXT "Remove"
+#define SPEED_PRETEXT "Speed: "
+#define SPEED_INSTANT_TEXT "Instant"
+#define SPEED_FAST_TEXT "Fast"
+#define SPEED_MEDIUM_TEXT "Meduim"
+#define SPEED_SLOW_TEXT "Slow"
 #define PLAY_TEXT "Play"
 #define PAUSE_TEXT "Pause"
 #define RESET_TEXT "Reset"
@@ -32,6 +37,10 @@
 #define SELECT_DESTINATION_TEXT "Please select a destination cell"
 #define FOUND_PATH_TEXT "Path found"
 #define NOT_FOUND_PATH_TEXT "Path not found"
+
+#define FAST_SLEEP_MS 100
+#define MEDIUM_SLEEP_MS 500
+#define SLOW_SLEEP_MS 1000
 
 #define V_CENTER(a,b) a.y+((a.height-b.y)/2)
 #define REC2VEC(a) (Vector2) {.x=a.x,.y=a.y}
@@ -65,6 +74,13 @@ typedef enum asv_tool_select {
   ASV_TOOL_SELECT_REMOVE
 } asv_tool_select;
 
+typedef enum asv_speed_select {
+  ASV_SPEED_SELECT_INSTANT,
+  ASV_SPEED_SELECT_FAST,
+  ASV_SPEED_SELECT_MEDIUM,
+  ASV_SPEED_SELECT_SLOW
+} asv_speed_select;
+
 typedef struct asv_status {
   char message[MAX_MESSAGE_LENGTH];
   asv_message_type message_type;
@@ -85,6 +101,7 @@ extern asv_status asv_app_status;
 extern asv_state asv_app_state;
 extern asv_item_select asv_item_selected;
 extern asv_tool_select asv_tool_selected;
+extern asv_speed_select asv_speed_selected;
 extern Vector2 asv_source_cell;
 extern Vector2 asv_destination_cell;
 extern pthread_t asv_thread;
@@ -95,18 +112,22 @@ void asv_init_grid();
 void asv_init_status();
 void asv_init_items();
 void asv_init_tools();
+void asv_init_speed();
 void asv_init_cells();
 void asv_init_state();
 void asv_set_state(asv_state state);
 void asv_set_status(const char *message, asv_message_type type);
 void asv_select_item(asv_item_select item);
 void asv_select_tool(asv_tool_select tool);
+void asv_select_speed(asv_speed_select speed);
 void asv_select_cell(int column_index, int row_index);
+void asv_cycle_speed();
 void asv_play();
 void asv_clear();
 void asv_reset();
 void asv_free_grid();
 void *asv();
+void asv_end_cycle();
 int asv_distance(Vector2 a, Vector2 b);
 int asv_compress(Vector2 a);
 Vector2 asv_expand(int a);
@@ -186,6 +207,7 @@ extern Rectangle asv_ui_source_button;
 extern Rectangle asv_ui_destination_button;
 extern Rectangle asv_ui_add_button;
 extern Rectangle asv_ui_remove_button;
+extern Rectangle asv_ui_speed_button;
 extern Rectangle asv_ui_play_button;
 extern Rectangle asv_ui_reset_button;
 extern Rectangle asv_ui_clear_button;
@@ -202,6 +224,7 @@ Color asv_ui_get_status_color();
 Color asv_ui_get_cell_color(int column_index, int row_index);
 Color asv_ui_get_item_color(asv_item_select item);
 Color asv_ui_get_tool_color(asv_tool_select tool);
+void asv_ui_get_speed_text(asv_speed_select speed, char *text);
 void asv_ui_draw_containers();
 void asv_ui_draw_text();
 void asv_ui_draw_grid();

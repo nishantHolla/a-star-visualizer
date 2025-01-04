@@ -13,6 +13,7 @@ int main(void) {
   asv_init_status();
   asv_init_items();
   asv_init_tools();
+  asv_init_speed();
   asv_init_cells();
   asv_ui_init_fonts();
 
@@ -58,6 +59,9 @@ int main(void) {
       }
       else if (CheckCollisionPointRec(MousePoint, asv_ui_remove_button)) {
         asv_select_tool(ASV_TOOL_SELECT_REMOVE);
+      }
+      else if (CheckCollisionPointRec(MousePoint, asv_ui_speed_button)) {
+        asv_cycle_speed();
       }
       else if (CheckCollisionPointRec(MousePoint, asv_ui_play_button)) {
         asv_play();
