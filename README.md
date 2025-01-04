@@ -1,6 +1,6 @@
 # A* visaulizer
 
-Visualizer for [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) in C using 
+Visualizer for [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) in C using
 [raylib](https://www.raylib.com/).
 <br />
 <br />
@@ -11,9 +11,26 @@ A* is a pathfinding algorithm that finds the shortest path between source and de
 [![Watch the video](./doc/thumb.jpg)](https://vimeo.com/1043903783?ts=0&share=copy)
 Click the image to view demo video
 
-## Building
+## Building (Linux and MacOS)
 
-TODO: WRITE BUILD STEPS
+- Clone the repository
+
+```bash
+git clone https://github.com/nishantHolla/a-star-visualizer
+cd a-star-visualizer
+```
+
+- Run make
+
+```bash
+make release
+```
+
+- Execute the program
+
+```bash
+./out/asv
+```
 
 ## About A*
 
