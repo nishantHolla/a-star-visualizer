@@ -7,6 +7,10 @@ Visualizer for [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_alg
 A* is a pathfinding algorithm that finds the shortest path between source and destination using
 a goal-directed heuristic.
 
+## Demo
+
+[![Watch the video]()](https://vimeo.com/1043903783?ts=0&share=copy)
+
 ## Building
 
 ## About A*
