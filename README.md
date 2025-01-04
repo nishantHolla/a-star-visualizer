@@ -12,6 +12,8 @@ A* is a pathfinding algorithm that finds the shortest path between source and de
 
 ## Building
 
+TODO: WRITE BUILD STEPS
+
 ## About A*
 
 A* is an informed search algorithm that finds the shortest path between a source vertex and a destination
