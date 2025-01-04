@@ -305,6 +305,9 @@ void *asv() {
   if (found) {
     asv_set_status(FOUND_PATH_TEXT, ASV_MESSAGE_SUCCESS);
     while (result.size > 0) {
+      while (asv_app_state == ASV_STATE_PAUSED) {
+        asv_sleep(500);
+      }
       Vector2 t = asv_pqueue_pop(&result, NULL);
       if (t.x != asv_source_cell.x || t.y != asv_source_cell.y) {
         asv_grid[(int) t.x][(int) t.y] = ASV_CELL_RESULT;
