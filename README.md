@@ -57,7 +57,7 @@ with higher cost.
 <br />
 The heuristic function $h(n)$ estimates how close the current cell is to the destination cell, and can
 be changed for different graph conditions. In this implementation, where the neighbors of a
-the cell is defined as the 4 adjacent cells, the Manhattan distance between the current cell and the destination
+the cell is defined as the 4 adjacent cells connected by a common edge, the Manhattan distance between the current cell and the destination
 cell is taken as a heuristic which is given by
 ```math
 d = |x_2 - x_1| + |y_2 - y_1|
