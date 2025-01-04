@@ -2,7 +2,7 @@
 
 // UI Assets
 
-const char *ASV_UI_FONT_PATH = "assets/alpha_beta.png";
+const char *ASV_UI_FONT_PATH = "assets/romulus.png";
 
 // UI Fonts
 
