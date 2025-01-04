@@ -37,19 +37,23 @@ priority of their cost. Since cost must be minimized, the cells with low cost ar
 with higher cost.
 <br />
 <br />
-The heuristic function h(n) estimates how close the current cell is to the destination cell, and can
+The heuristic function $h(n)$ estimates how close the current cell is to the destination cell, and can
 be changed for different graph conditions. In this implementation, where the neighbors of a
 the cell is defined as the 4 adjacent cells, the Manhattan distance between the current cell and the destination
 cell is taken as a heuristic which is given by
 ```math
 d = |x_2 - x_1| + |y_2 - y_1|
+
 ```
+
 For a graph where diagonal traversal is allowed, Euclidean distance is used as a heuristic which is given
 by
 ```math
 d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+
 ```
-where x1,y1, and x2,y2 define the coordinates of the current cell and the destination cell.
+
+where $`x1`$, $`y1`$, and $`x2`$, $`y2`$ define the coordinates of the current cell and the destination cell.
 <br />
 <br />
 The time complexity of A* is given by $`O(b^d)`$ where b is the branching factor and d is the number
