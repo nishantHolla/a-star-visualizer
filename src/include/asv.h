@@ -108,6 +108,7 @@ void asv_free_grid();
 void *asv();
 int asv_distance(Vector2 a, Vector2 b);
 int asv_compress(Vector2 a);
+Vector2 asv_expand(int a);
 int asv_cost(Vector2 a);
 
 // UI Assests
