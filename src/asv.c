@@ -164,7 +164,7 @@ void asv_clear() {
 void asv_reset() {
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
-      if (asv_grid[i][j] == ASV_CELL_VISITED) {
+      if (asv_grid[i][j] == ASV_CELL_VISITED || asv_grid[i][j] == ASV_CELL_RESULT) {
         asv_grid[i][j] = ASV_CELL_FREE;
       }
     }
@@ -211,7 +211,7 @@ void *asv() {
 
   while (open_set.size > 0) {
     while (asv_app_state == ASV_STATE_PAUSED) {
-      sleep(1);
+      asv_sleep(500);
     }
 
     Vector2 current = asv_pqueue_pop(&open_set, NULL);
@@ -237,6 +237,10 @@ void *asv() {
     int current_g = asv_hashmap_get(&g_score, asv_compress(current));
     int new_g = current_g + 1;
     int new_f = -1;
+
+    if (current.x != asv_source_cell.x || current.y != asv_source_cell.y) {
+      asv_grid[(int) current.x][(int) current.y] = ASV_CELL_VISITED;
+    }
 
     Vector2 neighbors_delta[4] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
@@ -269,6 +273,8 @@ void *asv() {
         asv_pqueue_push(&open_set, neighbor_cell, new_f);
       }
     }
+
+    asv_sleep(500);
   }
 
   if (found) {
@@ -276,13 +282,10 @@ void *asv() {
     while (result.size > 0) {
       Vector2 t = asv_pqueue_pop(&result, NULL);
       if (t.x != asv_source_cell.x || t.y != asv_source_cell.y) {
-        asv_grid[(int) t.x][(int) t.y] = ASV_CELL_VISITED;
+        asv_grid[(int) t.x][(int) t.y] = ASV_CELL_RESULT;
       }
 
-      struct timespec req = {0};
-      req.tv_sec = 0;
-      req.tv_nsec = 500 * 10000;
-      nanosleep(&req, NULL);
+      asv_sleep(500);
     }
   }
   else {
@@ -318,4 +321,11 @@ Vector2 asv_expand(int a) {
 
 int asv_cost(Vector2 a) {
   return asv_distance(a, asv_destination_cell);
+}
+
+void asv_sleep(int ms) {
+  struct timespec req = {0};
+  req.tv_sec = 0;
+  req.tv_nsec = ms * 1000000;
+  nanosleep(&req, NULL);
 }

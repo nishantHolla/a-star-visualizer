@@ -41,6 +41,7 @@
 typedef enum asv_cell_state {
   ASV_CELL_FREE,
   ASV_CELL_VISITED,
+  ASV_CELL_RESULT,
   ASV_CELL_SOURCE,
   ASV_CELL_DESTINATION,
   ASV_CELL_OBSTACLE
@@ -110,6 +111,7 @@ int asv_distance(Vector2 a, Vector2 b);
 int asv_compress(Vector2 a);
 Vector2 asv_expand(int a);
 int asv_cost(Vector2 a);
+void asv_sleep(int ms);
 
 // UI Assests
 
@@ -131,6 +133,7 @@ extern const Color ASV_UI_TEXT_SUCCESS_COLOR;
 
 extern const Color ASV_UI_CELL_FREE_COLOR;
 extern const Color ASV_UI_CELL_VISITED_COLOR;
+extern const Color ASV_UI_CELL_RESULT_COLOR;
 extern const Color ASV_UI_CELL_OBSTACLE_COLOR;
 extern const Color ASV_UI_CELL_SOURCE_COLOR;
 extern const Color ASV_UI_CELL_DESTINATION_COLOR;

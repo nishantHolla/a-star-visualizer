@@ -19,10 +19,11 @@ const Color ASV_UI_TEXT_ERROR_COLOR = { .r = 248, .g = 113, .b = 113, .a = 255 }
 const Color ASV_UI_TEXT_SUCCESS_COLOR = { .r = 74, .g = 222, .b = 128, .a = 255 };
 
 const Color ASV_UI_CELL_FREE_COLOR = { .r = 115, .g = 115, .b = 115, .a = 255 };
-const Color ASV_UI_CELL_VISITED_COLOR = { .r = 74, .g = 222, .b = 128, .a = 255};
+const Color ASV_UI_CELL_VISITED_COLOR = { .r = 251, .g = 113, .b = 133, .a = 255};
+const Color ASV_UI_CELL_RESULT_COLOR = { .r = 74, .g = 222, .b = 128, .a = 255};
 const Color ASV_UI_CELL_OBSTACLE_COLOR = { .r = 0, .g = 0, .b = 0, .a = 255};
 const Color ASV_UI_CELL_SOURCE_COLOR = { .r = 167, .g = 139, .b = 250, .a = 255};
-const Color ASV_UI_CELL_DESTINATION_COLOR = { .r = 251, .g = 113, .b = 133, .a = 255};
+const Color ASV_UI_CELL_DESTINATION_COLOR = { .r = 251, .g = 191, .b = 36, .a = 255};
 
 const Color ASV_UI_SELECTED_ITEM_COLOR = { .r = 251, .g = 146, .b = 60, .a = 255};
 const Color ASV_UI_SELECTED_TOOL_COLOR = { .r = 34, .g = 211, .b = 238, .a = 255};
@@ -229,6 +230,9 @@ Color asv_ui_get_cell_color(int column_index, int row_index) {
 
     case (ASV_CELL_VISITED):
       return ASV_UI_CELL_VISITED_COLOR;
+
+    case (ASV_CELL_RESULT):
+      return ASV_UI_CELL_RESULT_COLOR;
 
     default:
       return ASV_UI_CELL_FREE_COLOR;
