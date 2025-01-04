@@ -79,7 +79,10 @@ int main(void) {
 
   CloseWindow();
   asv_ui_free_fonts();
-  pthread_join(asv_thread, NULL);
+  if (asv_thread_created) {
+    pthread_cancel(asv_thread);
+    pthread_join(asv_thread, NULL);
+  }
   asv_free_grid();
 
   return 0;

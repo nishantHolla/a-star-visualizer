@@ -11,6 +11,7 @@ asv_speed_select asv_speed_selected;
 Vector2 asv_source_cell;
 Vector2 asv_destination_cell;
 pthread_t asv_thread;
+int asv_thread_created = 0;
 
 void asv_init_grid() {
   asv_grid = (asv_cell_state **) malloc(ASV_GRID_COLUMN_COUNT * sizeof(asv_cell_state *));
@@ -158,7 +159,9 @@ void asv_play() {
   }
 
   asv_set_state(ASV_STATE_PLAYING);
-  pthread_create(&asv_thread, NULL, &asv, NULL);
+  if (pthread_create(&asv_thread, NULL, &asv, NULL) == 0) {
+    asv_thread_created = 1;
+  };
 }
 
 void asv_clear() {
@@ -169,7 +172,9 @@ void asv_clear() {
   }
 
   if (asv_app_state != ASV_STATE_IDLE) {
-    pthread_cancel(asv_thread);
+    if (pthread_cancel(asv_thread) == 0) {
+      asv_thread_created = 0;
+    };
   }
 
   asv_source_cell = (Vector2) { .x = -1, .y = -1};
@@ -189,7 +194,9 @@ void asv_reset() {
   }
 
   if (asv_app_state != ASV_STATE_IDLE) {
-    pthread_cancel(asv_thread);
+    if (pthread_cancel(asv_thread) == 0) {
+      asv_thread_created = 0;
+    };
   }
   asv_set_state(ASV_STATE_IDLE);
   asv_select_tool(ASV_TOOL_SELECT_ADD);

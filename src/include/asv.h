@@ -38,9 +38,9 @@
 #define FOUND_PATH_TEXT "Path found"
 #define NOT_FOUND_PATH_TEXT "Path not found"
 
-#define FAST_SLEEP_MS 100
-#define MEDIUM_SLEEP_MS 500
-#define SLOW_SLEEP_MS 1000
+#define FAST_SLEEP_MS 10
+#define MEDIUM_SLEEP_MS 100
+#define SLOW_SLEEP_MS 200
 
 #define V_CENTER(a,b) a.y+((a.height-b.y)/2)
 #define REC2VEC(a) (Vector2) {.x=a.x,.y=a.y}
@@ -105,6 +105,7 @@ extern asv_speed_select asv_speed_selected;
 extern Vector2 asv_source_cell;
 extern Vector2 asv_destination_cell;
 extern pthread_t asv_thread;
+extern int asv_thread_created;
 
 // App Functions
 
