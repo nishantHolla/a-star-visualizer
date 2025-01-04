@@ -9,7 +9,7 @@ a goal directed heuristic.
 
 ## Demo
 
-<video src="./doc/demo.mp4" />
+![](./doc/demo.mp4)
 
 ## Building
 
