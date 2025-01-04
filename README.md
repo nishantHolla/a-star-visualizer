@@ -4,8 +4,7 @@ Visualizer for [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_alg
 [raylib](https://www.raylib.com/).
 <br />
 <br />
-A* is a pathfinding algorithm that finds the shortest path between source and destination using
-a goal-directed heuristic.
+A* is a pathfinding algorithm that finds the shortest path between source and destination using a goal-directed heuristic.
 
 ## Demo
 
