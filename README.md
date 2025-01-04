@@ -18,9 +18,9 @@ and extending those paths one edge at a time until the goal node is reached.
 <br />
 At each itteration of the search, A* holds a cost map of all visited nodes that is calculates by the
 formula
-$$
+```math
 f(n) = g(n) + h(n)
-$$
+```
 where
 
 - $g(n)$ is the cost of the path from start node to node n
@@ -36,16 +36,16 @@ The heuristic function h(n) that estimates how close current cell is to the dest
 be changed for different conditions of the graph. In this implementation, where the neighbors of a
 cell is defined as the 4 adjacent cells, Manhattan distance between the current cell and the destination
 cell is taken as heuristic which is given by
-$$
+```math
 d = |x_2 - x_1| + |y_2 - y_1|
-$$
+```
 For a graph whre diagonal traversal is allowed, Euclidean distance is used as heuristic which is given
 by
-$$
+```math
 d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
-$$
+```
 whre x1,y1 and x2,y2 define the coordinates of the current cell and the destination cell.
 <br />
 <br />
-The time complexity of A* is given by $O(b^d)$ where b is the branching factor and d is the number
+The time complexity of A* is given by $`O(b^d)`$ where b is the branching factor and d is the number
 of nodes in the solution
