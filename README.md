@@ -9,6 +9,7 @@ A* is a pathfinding algorithm that finds the shortest path between source and de
 ## Demo
 
 [![Watch the video](./doc/thumb.jpg)](https://vimeo.com/1043903783?ts=0&share=copy)
+Click the image to view demo video
 
 ## Building
 
