@@ -10,7 +10,7 @@ UNAME_S=$(shell uname)
 ifeq ($(UNAME_S),Linux)
 	OS_LIB=-lraylib-linux
 else ifeq ($(UNAME_S),Darwin)
-	OS_LIB=-lraylibmac
+	OS_LIB=-lraylib-mac
 endif
 
 pre:
