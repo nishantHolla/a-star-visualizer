@@ -8,8 +8,7 @@ A* is a pathfinding algorithm that finds the shortest path between source and de
 
 ## Demo
 
-[![Watch the video](./doc/thumb.jpg)](https://vimeo.com/1043903783?ts=0&share=copy)
-Click the image to view demo video
+https://github.com/user-attachments/assets/4a38f041-a8de-40b0-8c4d-3df8970cda81
 
 ## Building (Linux and MacOS)
 
