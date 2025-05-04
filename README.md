@@ -10,7 +10,7 @@ A* is a pathfinding algorithm that finds the shortest path between source and de
 
 https://github.com/user-attachments/assets/4a38f041-a8de-40b0-8c4d-3df8970cda81
 
-## Building (Linux and MacOS)
+## Building
 
 - Clone the repository
 
@@ -19,16 +19,28 @@ git clone https://github.com/nishantHolla/a-star-visualizer
 cd a-star-visualizer
 ```
 
-- Run make
+- Run build script to build in debug mode
 
 ```bash
-make release
+./build.sh debug
+```
+
+or in release mode
+
+```bash
+./build.sh release
 ```
 
 - Execute the program
 
 ```bash
-./out/asv
+./run debug
+```
+
+or if you built in release mode
+
+```bash
+./run release
 ```
 
 ## About A*
