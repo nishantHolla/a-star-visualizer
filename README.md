@@ -10,7 +10,22 @@ A* is a pathfinding algorithm that finds the shortest path between source and de
 
 https://github.com/user-attachments/assets/4a38f041-a8de-40b0-8c4d-3df8970cda81
 
-## Building
+## Building using docker
+
+- If you are using linux make sure to run these to use docker buildkit and allow x11 forwarding
+
+```bash
+export DOCKER_BUILDKIT=1
+xhost +local:root > /dev/null
+```
+
+- If you are using MacOS make sure to run these to use docker buildkit and allow x11 forwarding
+```bash
+export DOCKER_BUILDKIT=1
+```
+Setting up Docker for gui in mac: [https://gist.github.com/roaldnefs/fe9f36b0e8cf2890af14572c083b516c](https://gist.github.com/roaldnefs/fe9f36b0e8cf2890af14572c083b516c)
+
+- If you are using windows setup WSL and follow the steps for linux machine.
 
 - Clone the repository
 
