@@ -1,4 +1,4 @@
-# A* visaulizer
+# A* visualizer
 
 Visualizer for [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) in C using
 [raylib](https://www.raylib.com/).
