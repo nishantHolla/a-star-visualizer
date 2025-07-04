@@ -84,11 +84,11 @@ Vector2 asv_ui_status_position;
 
 // UI Functions
 
-void asv_ui_init_fonts() {
+void asv_ui_init_fonts(void) {
   fonts[0] = LoadFont(ASV_UI_FONT_PATH);
 }
 
-void asv_ui_calculate() {
+void asv_ui_calculate(void) {
 
   asv_ui_status_bar = (Rectangle) {
     .x = ASV_UI_WINDOW_PADDING.x,
@@ -206,7 +206,7 @@ void asv_ui_calculate() {
   };
 }
 
-Color asv_ui_get_status_color() {
+Color asv_ui_get_status_color(void) {
   switch (asv_app_status.message_type) {
     case (ASV_MESSAGE_NORMAL):
       return ASV_UI_TEXT_COLOR;
@@ -300,13 +300,13 @@ void asv_ui_get_speed_text(asv_speed_select speed, char *text) {
   }
 }
 
-void asv_ui_draw_containers() {
+void asv_ui_draw_containers(void) {
   DrawRectangleRounded(asv_ui_status_bar, ASV_UI_ROUNDNESS_LG, 0, ASV_UI_CONTAINER_BG_COLOR);
   DrawRectangleRounded(asv_ui_grid, ASV_UI_ROUNDNESS_SM, 0, ASV_UI_CONTAINER_BG_COLOR);
   DrawRectangleRounded(asv_ui_menu_bar, ASV_UI_ROUNDNESS_LG, 0, ASV_UI_CONTAINER_BG_COLOR);
 }
 
-void asv_ui_draw_text() {
+void asv_ui_draw_text(void) {
   char speed_text[100];
   asv_ui_get_speed_text(asv_speed_selected, speed_text);
 
@@ -323,7 +323,7 @@ void asv_ui_draw_text() {
   DrawTextEx(fonts[0], speed_text, REC2VEC(asv_ui_speed_button), fonts[0].baseSize * ASV_UI_TEXT_ACTION_SIZE, ASV_UI_TEXT_ACTION_SPACING, ASV_UI_TEXT_COLOR);
 }
 
-void asv_ui_draw_grid() {
+void asv_ui_draw_grid(void) {
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
       Rectangle cell = {
@@ -337,7 +337,7 @@ void asv_ui_draw_grid() {
   }
 }
 
-void asv_ui_free_fonts() {
+void asv_ui_free_fonts(void) {
   for (int i = 0; i < MAX_FONTS; i++) {
     UnloadFont(fonts[i]);
   }

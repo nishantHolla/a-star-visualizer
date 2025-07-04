@@ -45,6 +45,8 @@
 #define V_CENTER(a,b) a.y+((a.height-b.y)/2)
 #define REC2VEC(a) (Vector2) {.x=a.x,.y=a.y}
 
+#define UNUSED(x) (void)(x)
+
 // App Definitions
 
 typedef enum asv_cell_state {
@@ -109,26 +111,26 @@ extern int asv_thread_created;
 
 // App Functions
 
-void asv_init_grid();
-void asv_init_status();
-void asv_init_items();
-void asv_init_tools();
-void asv_init_speed();
-void asv_init_cells();
-void asv_init_state();
+void asv_init_grid(void);
+void asv_init_status(void);
+void asv_init_items(void);
+void asv_init_tools(void);
+void asv_init_speed(void);
+void asv_init_cells(void);
+void asv_init_state(void);
 void asv_set_state(asv_state state);
 void asv_set_status(const char *message, asv_message_type type);
 void asv_select_item(asv_item_select item);
 void asv_select_tool(asv_tool_select tool);
 void asv_select_speed(asv_speed_select speed);
 void asv_select_cell(int column_index, int row_index);
-void asv_cycle_speed();
-void asv_play();
-void asv_clear();
-void asv_reset();
-void asv_free_grid();
-void *asv();
-void asv_end_cycle();
+void asv_cycle_speed(void);
+void asv_play(void);
+void asv_clear(void);
+void asv_reset(void);
+void asv_free_grid(void);
+void *asv(void* args);
+void asv_end_cycle(void);
 int asv_distance(Vector2 a, Vector2 b);
 int asv_compress(Vector2 a);
 Vector2 asv_expand(int a);
@@ -219,17 +221,17 @@ extern Vector2 asv_ui_status_position;
 
 // UI Functions
 
-void asv_ui_init_fonts();
-void asv_ui_calculate();
-Color asv_ui_get_status_color();
+void asv_ui_init_fonts(void);
+void asv_ui_calculate(void);
+Color asv_ui_get_status_color(void);
 Color asv_ui_get_cell_color(int column_index, int row_index);
 Color asv_ui_get_item_color(asv_item_select item);
 Color asv_ui_get_tool_color(asv_tool_select tool);
 void asv_ui_get_speed_text(asv_speed_select speed, char *text);
-void asv_ui_draw_containers();
-void asv_ui_draw_text();
-void asv_ui_draw_grid();
-void asv_ui_free_fonts();
+void asv_ui_draw_containers(void);
+void asv_ui_draw_text(void);
+void asv_ui_draw_grid(void);
+void asv_ui_free_fonts(void);
 
 // HashMap
 

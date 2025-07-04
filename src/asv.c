@@ -13,7 +13,7 @@ Vector2 asv_destination_cell;
 pthread_t asv_thread;
 int asv_thread_created = 0;
 
-void asv_init_grid() {
+void asv_init_grid(void) {
   asv_grid = (asv_cell_state **) malloc(ASV_GRID_COLUMN_COUNT * sizeof(asv_cell_state *));
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     asv_grid[i] = (asv_cell_state *) malloc(ASV_GRID_ROW_COUNT * sizeof(asv_cell_state));
@@ -23,27 +23,27 @@ void asv_init_grid() {
   }
 }
 
-void asv_init_state() {
+void asv_init_state(void) {
   asv_set_state(ASV_STATE_IDLE);
 }
 
-void asv_init_status() {
+void asv_init_status(void) {
   asv_set_status(OBSTACLES_STATUS_TEXT, ASV_MESSAGE_NORMAL);
 }
 
-void asv_init_items() {
+void asv_init_items(void) {
   asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
 }
 
-void asv_init_tools() {
+void asv_init_tools(void) {
   asv_select_tool(ASV_TOOL_SELECT_ADD);
 }
 
-void asv_init_speed() {
+void asv_init_speed(void) {
   asv_select_speed(ASV_SPEED_SELECT_INSTANT);
 }
 
-void asv_init_cells() {
+void asv_init_cells(void) {
   asv_source_cell = (Vector2) { .x = -1, .y = -1};
   asv_destination_cell = (Vector2) { .x = -1, .y = -1};
 }
@@ -129,7 +129,7 @@ void asv_select_cell(int column_index, int row_index) {
   }
 }
 
-void asv_cycle_speed() {
+void asv_cycle_speed(void) {
   int speed = asv_speed_selected - 1;
   if (speed < 0) {
     speed = ASV_SPEED_SELECT_SLOW;
@@ -138,7 +138,7 @@ void asv_cycle_speed() {
   asv_select_speed((asv_speed_select) speed);
 }
 
-void asv_play() {
+void asv_play(void) {
   if (asv_app_state == ASV_STATE_PLAYING) {
     asv_set_state(ASV_STATE_PAUSED);
     return;
@@ -164,7 +164,7 @@ void asv_play() {
   };
 }
 
-void asv_clear() {
+void asv_clear(void) {
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
       asv_grid[i][j] = ASV_CELL_FREE;
@@ -184,7 +184,7 @@ void asv_clear() {
   asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
 }
 
-void asv_reset() {
+void asv_reset(void) {
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     for (int j = 0; j < ASV_GRID_ROW_COUNT; j++) {
       if (asv_grid[i][j] == ASV_CELL_VISITED || asv_grid[i][j] == ASV_CELL_RESULT) {
@@ -203,14 +203,15 @@ void asv_reset() {
   asv_select_item(ASV_ITEM_SELECT_OBSTACLES);
 }
 
-void asv_free_grid() {
+void asv_free_grid(void) {
   for (int i = 0; i < ASV_GRID_COLUMN_COUNT; i++) {
     free(asv_grid[i]);
   }
   free(asv_grid);
 }
 
-void *asv() {
+void *asv(void* args) {
+  UNUSED(args);
   int found = 0;
 
   asv_PQueue open_set;
@@ -329,7 +330,7 @@ void *asv() {
   return NULL;
 }
 
-void asv_end_cycle() {
+void asv_end_cycle(void) {
   switch (asv_speed_selected) {
     case ASV_SPEED_SELECT_INSTANT:
       return;
